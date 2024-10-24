@@ -1,81 +1,39 @@
-from time import sleep
-
+import time
 from SX127x.LoRa import *
-
 from SX127x.board_config import BOARD
 
-BOARD.setup()
-
-class LoRaRcvCont(LoRa):
-
-    def __init__(self, verbose=False):
-
-        super(LoRaRcvCont, self).__init__(verbose)
-
-        self.set_mode(MODE.SLEEP)
-
-        self.set_dio_mapping([0] * 6)
+class LoRaReceiver(LoRa):
+    def __init__(self):
+        super(LoRaReceiver, self).__init__(verbose=False)
+        BOARD.setup()
 
     def start(self):
-
-        self.reset_ptr_rx()
-
-        self.set_mode(MODE.RXCONT)
-
-        while True:
-
-            sleep(.5)
-
-            rssi_value = self.get_rssi_value()
-
-            status = self.get_modem_status()
-
-            sys.stdout.flush()
-
-            
+        self.set_mode(MODE.SLEEP)
+        self.set_dio_mapping([0] * 6)
+        self.set_freq(433.0)  # Frequenza in MHz
+        self.set_bw(500)  # Larghezza di banda a 500kHz
+        self.set_spreading_factor(7)  # SF7
+        self.set_coding_rate(4, 5)  # CR 4/5
+        self.set_rx_crc(True)  # Abilita il controllo CRC
+        self.set_mode(MODE.RXCONT)  # Modalità di ricezione continua
 
     def on_rx_done(self):
-
-        print("\nReceived: ")
-
+        print("Messaggio ricevuto!")
         self.clear_irq_flags(RxDone=1)
-
         payload = self.read_payload(nocheck=True)
+        print("Payload:", bytes(payload).decode('utf-8', errors='ignore'))
+        self.set_mode(MODE.RXCONT)  # Continua la ricezione
 
-        print(bytes(payload).decode("utf-8",'ignore'))
+if __name__ == "__main__":
+    receiver = LoRaReceiver()
+    receiver.start()
+    print("In ascolto per i messaggi LoRa...")
 
-        self.set_mode(MODE.SLEEP)
-
-        self.reset_ptr_rx()
-
-        self.set_mode(MODE.RXCONT) 
-
-lora = LoRaRcvCont(verbose=False)
-
-lora.set_mode(MODE.STDBY)
-
-#  Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
-
-lora.set_pa_config(pa_select=1)
-
-try:
-
-    lora.start()
-
-except KeyboardInterrupt:
-
-    sys.stdout.flush()
-
-    print("")
-
-    sys.stderr.write("KeyboardInterrupt\n")
-
-finally:
-
-    sys.stdout.flush()
-
-    print("")
-
-    lora.set_mode(MODE.SLEEP)
-
-    BOARD.teardown()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Interruzione del programma.")
+    finally:
+        receiver.set_mode(MODE.SLEEP)
+        BOARD.teardown()
