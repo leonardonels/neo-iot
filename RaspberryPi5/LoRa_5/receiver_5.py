@@ -3,7 +3,6 @@ import RPi.GPIO as GPIO
 import time
 
 # Configurazione dei pin GPIO
-SS_PIN = 8  # Pin per Select Slave (CE0 o CE1 in base alla configurazione hardware)
 DIO0_PIN = 22  # Pin per interrupt su DIO0
 
 # Inizializzazione della comunicazione SPI
@@ -21,12 +20,10 @@ def read_register(register):
 
 # Configurazione del GPIO
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(SS_PIN, GPIO.OUT)
 GPIO.setup(DIO0_PIN, GPIO.IN)
 
 # Funzione per inizializzare il modulo LoRa
 def lora_init():
-    GPIO.output(SS_PIN, GPIO.HIGH)
     time.sleep(0.1)
     
     # Metti LoRa in modalità sleep per configurazione
@@ -36,13 +33,6 @@ def lora_init():
     write_register(0x06, 0x6C)
     write_register(0x07, 0x80)
     write_register(0x08, 0x00)
-    
-    # Imposta banda, Spreading Factor e Coding Rate
-    write_register(0x1D, 0x72)  # Imposta la banda a 500kHz, Coding Rate 4/5
-    write_register(0x1E, 0x74)  # Spreading Factor 7
-    
-    # Imposta il modo di ricezione continua
-    write_register(0x01, 0x85)  # Modalità LoRa RX continua
 
 # Funzione per leggere un pacchetto LoRa
 def lora_receive():
