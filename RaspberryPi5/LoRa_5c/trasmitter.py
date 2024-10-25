@@ -48,7 +48,11 @@ cs_pin = OutputDevice(CS_PIN, active_high=False)
 # SPI setup
 spi = spidev.SpiDev()
 spi.open(0, 0)
-spi.max_speed_hz = 500000
+spi.max_speed_hz = 500000   #500Hz
+
+def check_mode():
+    current_mode = read_register(REG_OP_MODE)
+    print(f"Current mode: {current_mode}")
 
 # Function to write on LoRa register
 def write_register(address, data):
@@ -74,7 +78,8 @@ def reset_lora():
 def init_lora():
     reset_lora()
     write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
-    write_register(REG_PA_CONFIG, MAX_POWER)
+    #write_register(REG_PA_CONFIG, MAX_POWER)
+    write_register(REG_PA_CONFIG, 0x8F)     # kinda low
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
     write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
     write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)
