@@ -58,6 +58,9 @@ def check_mode():
 try:
     while True:
         print("starting demo")
+        write_register(REG_OP_MODE, MODE_LORA | MODE_SLEEP)
+        check_mode()
+        sleep(5)
         write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
         check_mode()
         sleep(5)
