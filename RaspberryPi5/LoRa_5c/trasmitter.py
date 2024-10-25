@@ -109,7 +109,7 @@ def send_message(message):
     check_mode()
 
     # Wait for TxDone flag
-    while GPIO.input(DIO0_PIN) == 0:
+    while not dio0_pin.is_active:
         sleep(0.1)
     print("TxDone flag received")
 
