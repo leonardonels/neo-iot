@@ -25,6 +25,7 @@ REG_VERSION = 0x42  # Registro della versione del chip
 
 # LoRa configuration values
 MAX_POWER = 0xFF
+LOW_POWER = 0x70
 BANDWIDTH_500KHZ = 0x72
 SPREADING_FACTOR_7 = 0x74
 CODING_RATE_4_5 = 0x04
@@ -57,7 +58,7 @@ def init_lora():
     check_mode()
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
     check_mode()
-    write_register(REG_PA_CONFIG, MAX_POWER)
+    write_register(REG_PA_CONFIG, LOW_POWER)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
     write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
     write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)
