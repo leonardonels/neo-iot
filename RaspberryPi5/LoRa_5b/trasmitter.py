@@ -42,6 +42,8 @@ IRQ_TX_DONE_MASK = 0x08
 MSB_1 = 0x80
 MSB_0 = 0x7F
 
+REG_VERSION = 0x42  # Registro per leggere la versione
+
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(RST_PIN, GPIO.OUT)
@@ -53,6 +55,11 @@ GPIO.output(CS_PIN, GPIO.HIGH)
 spi = spidev.SpiDev()
 spi.open(0, 0)
 spi.max_speed_hz = 5000000
+
+# Funzione di verifica del modulo
+def check_module():
+    version = read_register(REG_VERSION)
+    print(f"Module version: {version}")
 
 # Function to write on LoRa register
 def write_register(address, data):
@@ -78,13 +85,28 @@ def reset_lora():
 def init_lora():
     reset_lora()
     write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)  # Set LoRa mode, standby mode
+    sleep(0.1)
+
+    mode = read_register(REG_OP_MODE)
+    print(f"Current mode after standby setup: {mode}")
+
     write_register(REG_PA_CONFIG, MAX_POWER)  # Set max power
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)  # Set bandwidth to 500 kHz, coding rate to 4/5
     write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)  # Set spreading factor to SF7
     write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)  # Additional configuration
 
+    print(f"PA_CONFIG: {read_register(REG_PA_CONFIG)}")
+    print(f"MODEM_CONFIG1: {read_register(REG_MODEM_CONFIG1)}")
+    print(f"MODEM_CONFIG2: {read_register(REG_MODEM_CONFIG2)}")
+    print(f"MODEM_CONFIG3: {read_register(REG_MODEM_CONFIG3)}")
+
     write_register(REG_FIFO_TX_BASE_ADDR, 0x80)  # Set FIFO Tx base address
     write_register(REG_FIFO_RX_BASE_ADDR, 0x80)  # Set FIFO Rx base address
+
+    print(f"FIFO_TX_BASE_ADDR: {read_register(REG_FIFO_TX_BASE_ADDR)}")
+    print(f"FIFO_RX_BASE_ADDR: {read_register(REG_FIFO_RX_BASE_ADDR)}")
+
+    print("Module initialized.")
 
 # Send a message
 def send_message(message):
@@ -124,6 +146,7 @@ def send_message(message):
 
 
 try:
+    check_module()
     print("starting...")
     init_lora()
     print("LoRa initiated!")
