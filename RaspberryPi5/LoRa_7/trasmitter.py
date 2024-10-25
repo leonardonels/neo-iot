@@ -80,9 +80,9 @@ def write_register(address, data):
 # Function to read from LoRa register
 def read_register(address):
     cs_pin.off()
-    response = spi.xfer3([address & MSB_0, 0x00])
+    response = spi.xfer([address, 0])[1]
     cs_pin.on()
-    return response[1]
+    return response
 
 def check_mode():
     current_mode = read_register(REG_OP_MODE)
