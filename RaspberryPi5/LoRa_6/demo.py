@@ -64,6 +64,5 @@ try:
         sleep(5)
         write_register(REG_OP_MODE, MODE_TX)
         check_mode()
-        reset_lora()
 except KeyboardInterrupt:
     spi.close()
