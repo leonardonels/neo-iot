@@ -47,12 +47,13 @@ cs_pin = OutputDevice(CS_PIN)
 # SPI setup
 spi = spidev.SpiDev()
 spi.open(0, 0)
-spi.max_speed_hz = 5000000  # 5 MHz
+spi.max_speed_hz = 1000000  # 1 MHz
 
 #...
 
 def init_lora():
     reset_lora()
+    write_register(REG_OP_MODE, MODE_LORA)
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
     write_register(REG_PA_CONFIG, MAX_POWER)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
