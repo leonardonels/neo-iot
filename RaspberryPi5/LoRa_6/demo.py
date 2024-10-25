@@ -56,13 +56,12 @@ def check_mode():
     print(f"Current mode: {current_mode}")
 
 try:
+    print("starting demo")
+    check_mode()
+    write_register(REG_OP_MODE, MODE_LORA)
     while True:
-        print("starting demo")
-        check_mode()
-        write_register(REG_OP_MODE, MODE_LORA)
-        check_mode()
+        sleep(5)
         write_register(REG_OP_MODE, MODE_LORA_TX)
         check_mode()
-        sleep(5)
 except KeyboardInterrupt:
     spi.close()
