@@ -27,7 +27,7 @@ REG_VERSION = 0x42
 # LoRa operational modes
 MODE_SLEEP = 0x00
 MODE_STDBY = 0x01
-MODE_TX = 0x83
+MODE_TX = 0x03
 MODE_LORA = 0x80
 
 # LoRa configuration values
