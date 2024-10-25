@@ -84,19 +84,34 @@ def init_lora():
 
 # Send a message
 def send_message(message):
-    write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
-    write_register(REG_FIFO_ADDR_PTR, 0x80)
+    write_register(REG_FIFO_ADDR_PTR, 0x80)  # Set FIFO pointer to Tx base address
+    print("FIFO pointer set")
+
+    # Write message to FIFO
     for byte in message.encode():
         write_register(REG_FIFO, byte)
+    print("Message written to FIFO")
+
+    # Set payload length
     write_register(REG_PAYLOAD_LENGTH, len(message))
+    print("Payload length set")
+
+    # Start transmission
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
-    print("Message wronte")
+    print("Transmission started")
 
-    while not dio0_pin.is_active:
+    # Check mode after setting to TX
+    check_mode()
+
+    # Wait for TxDone flag
+    while GPIO.input(DIO0_PIN) == 0:
         sleep(0.1)
+    print("TxDone flag received")
 
+    # Clear TxDone flag
     write_register(REG_IRQ_FLAGS, 0x08)
-    print("Message sent")
+    print("TxDone flag cleared")
+
 
 try:
     init_lora()
