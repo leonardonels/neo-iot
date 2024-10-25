@@ -95,24 +95,33 @@ def send_message(message):
     # Write message to FIFO
     for byte in message.encode():
         write_register(REG_FIFO, byte)
-    print("message wrote to FIFO")
+    print("Message written to FIFO")
 
     # Set payload length
     write_register(REG_PAYLOAD_LENGTH, len(message))
-    print("payload lenght setted")
+    print("Payload length set")
 
     # Start transmission
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
-    print("transmission started")
-
+    print("Transmission started")
+    
+    # Verifica che il modulo sia effettivamente in MODE_TX
+    mode = read_register(REG_OP_MODE)
+    if mode != (MODE_LORA | MODE_TX):
+        print(f"Warning: The module is not in TX mode. Current mode: {mode}")
+    
     # Wait for TxDone flag
     while GPIO.input(DIO0_PIN) == 0:
+        irq_flags = read_register(REG_IRQ_FLAGS)
+        if irq_flags & IRQ_TX_DONE_MASK:
+            break
         sleep(0.1)
     print("TxDone flag received")
 
     # Clear TxDone flag
     write_register(REG_IRQ_FLAGS, IRQ_TX_DONE_MASK)
     print("TxDone flag cleared")
+
 
 try:
     print("starting...")
