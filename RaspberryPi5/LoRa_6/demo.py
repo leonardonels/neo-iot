@@ -60,10 +60,10 @@ try:
     write_register(REG_OP_MODE, MODE_LORA | MODE_SLEEP)
     check_mode()
     sleep(1)
-    write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
+    write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
     check_mode()
     sleep(1)
-    write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
+    write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
     check_mode()
     while True:
         sleep(5)
