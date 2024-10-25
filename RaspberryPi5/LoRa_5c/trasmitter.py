@@ -103,6 +103,8 @@ def send_message(message):
 
     # Start transmission
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
+    sleep(0.1)  # Ritardo per permettere al modulo di passare alla modalità di trasmissione
+    check_mode()  # Controlla di nuovo la modalità
     print("Transmission started")
 
     # Check mode after setting to TX
