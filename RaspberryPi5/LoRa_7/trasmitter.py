@@ -72,16 +72,16 @@ def reset_lora():
 
 # Function to write on LoRa register
 def write_register(address, data):
-    cs_pin.on()
-    spi.xfer([address | MSB_1, data])
     cs_pin.off()
+    spi.xfer([address | MSB_1, data])
+    cs_pin.on()
     sleep(0.01)
 
 # Function to read from LoRa register
 def read_register(address):
-    cs_pin.on()
-    response = spi.xfer([address & MSB_0, 0x00])
     cs_pin.off()
+    response = spi.xfer([address & MSB_0, 0x00])
+    cs_pin.on()
     return response[1]
 
 def check_mode():
