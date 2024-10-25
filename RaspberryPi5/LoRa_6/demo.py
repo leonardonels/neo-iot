@@ -28,7 +28,7 @@ cs_pin = OutputDevice(CS_PIN, active_high=False)
 # SPI setup
 spi = spidev.SpiDev()
 spi.open(0, 0)
-spi.max_speed_hz = 500000   #500Hz
+spi.max_speed_hz = 5000000   #5 MHz
 
 #...
 # Reset LoRa module
