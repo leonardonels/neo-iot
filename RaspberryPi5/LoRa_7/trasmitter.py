@@ -121,9 +121,11 @@ def send_message(message):
     print("TxDone flag cleared")
 
 try:
-    
+    init_lora()
     while True:
-        sleep(5)  # Keep checking mode every 5 seconds
+        send_message("Hello World!")
+        print("Message sent: Hello World!")
+        sleep(5)
 except KeyboardInterrupt:
     spi.close()
     
