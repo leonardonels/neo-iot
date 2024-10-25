@@ -65,9 +65,9 @@ def init_lora():
 
     # Reset LoRa module
 def reset_lora():
-    reset_pin.on()
-    sleep(0.1)
     reset_pin.off()
+    sleep(0.1)
+    reset_pin.on()
     sleep(0.1)
 
 # Function to write on LoRa register
