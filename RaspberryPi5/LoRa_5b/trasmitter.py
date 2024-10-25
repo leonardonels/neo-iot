@@ -4,8 +4,7 @@ from time import sleep
 
 # Pin configuration
 RST_PIN = 22
-DIO0_PIN = 23
-DIO1_PIN = 24
+DIO0_PIN = 27
 CS_PIN = 25
 
 # LoRa register addresses (consts)
@@ -36,6 +35,9 @@ BANDWIDTH_500KHZ = 0x72            # Bandwidth 500 kHz, Coding Rate 4/5
 SPREADING_FACTOR_7 = 0x74          # Spreading Factor 7
 CODING_RATE_4_5 = 0x04             # Additional configuration, Coding Rate 4/5
 
+# Interrupt Flags
+IRQ_TX_DONE_MASK = 0x08
+
 # Most Significative Bit (MSB)
 MSB_1 = 0x80
 MSB_0 = 0x7F
@@ -44,7 +46,6 @@ MSB_0 = 0x7F
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(RST_PIN, GPIO.OUT)
 GPIO.setup(DIO0_PIN, GPIO.IN)
-GPIO.setup(DIO1_PIN, GPIO.IN)
 GPIO.setup(CS_PIN, GPIO.OUT)
 GPIO.output(CS_PIN, GPIO.HIGH)
 
@@ -89,26 +90,34 @@ def init_lora():
 def send_message(message):
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)  # Set LoRa mode, Tx mode
     write_register(REG_FIFO_ADDR_PTR, 0x80)  # Set FIFO pointer to Tx base address
+    print("Tx mode selected")
 
     # Write message to FIFO
     for byte in message.encode():
         write_register(REG_FIFO, byte)
+    print("message wrote to FIFO")
 
     # Set payload length
     write_register(REG_PAYLOAD_LENGTH, len(message))
+    print("payload lenght setted")
 
     # Start transmission
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
+    print("transmission started")
 
     # Wait for TxDone flag
     while GPIO.input(DIO0_PIN) == 0:
         sleep(0.1)
+    print("TxDone flag received")
 
     # Clear TxDone flag
-    write_register(REG_IRQ_FLAGS, 0x08)
+    write_register(REG_IRQ_FLAGS, IRQ_TX_DONE_MASK)
+    print("TxDone flag cleared")
 
 try:
+    print("starting...")
     init_lora()
+    print("LoRa initiated!")
     while True:
         send_message("Hello World!")
         print("Message sent: Hello World!")
