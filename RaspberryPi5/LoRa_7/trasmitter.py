@@ -21,6 +21,7 @@ REG_FIFO_CURRENT_ADDR = 0x10
 REG_PAYLOAD_LENGTH = 0x22
 REG_IRQ_FLAGS = 0x12
 
+REG_VERSION = 0x42  # Registro della versione del chip
 
 # LoRa configuration values
 MAX_POWER = 0xFF
@@ -60,6 +61,7 @@ def write_register(address, data):
     cs_pin.on()
     spi.xfer([address | MSB_1, data])
     cs_pin.off()
+    sleep(0.05)
 
 # Function to read from LoRa register
 def read_register(address):
@@ -75,7 +77,7 @@ def check_mode():
 #...
 
 def init_lora():
-    #reset_lora()
+    reset_lora()
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
     write_register(REG_PA_CONFIG, MAX_POWER)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
@@ -120,8 +122,18 @@ def send_message(message):
     write_register(REG_IRQ_FLAGS, 0x08)
     print("TxDone flag cleared")
 
+def check_version():
+    version = read_register(REG_VERSION)
+    print(f"LoRa Chip Version: {version}")
+    if version == 0x12:  # 0x12 è il valore tipico per SX1276/SX1278
+        print("Modulo LoRa riconosciuto correttamente.")
+    else:
+        print("Warning: valore inatteso del registro di versione. Potrebbe esserci un problema di connessione.")
+
+
 try:
     init_lora()
+    check_version()
     while True:
         send_message("Hello World!")
         print("Message sent: Hello World!")
