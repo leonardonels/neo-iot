@@ -54,7 +54,9 @@ spi.max_speed_hz = 1000000  # 1 MHz
 def init_lora():
     reset_lora()
     write_register(REG_OP_MODE, MODE_LORA)
+    check_mode()
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
+    check_mode()
     write_register(REG_PA_CONFIG, MAX_POWER)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
     write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
@@ -62,7 +64,6 @@ def init_lora():
     write_register(REG_FIFO_TX_BASE_ADDR, 0x80)
     write_register(REG_FIFO_RX_BASE_ADDR, 0x80)
     print("Module initialized.")
-    check_mode()
 
     # Reset LoRa module
 def reset_lora():
