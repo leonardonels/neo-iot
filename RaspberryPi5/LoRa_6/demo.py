@@ -13,15 +13,8 @@ REG_OP_MODE = 0x01
 # LoRa operational modes
 MODE_SLEEP = 0x00
 MODE_STDBY = 0x01
-MODE_TX = 0x011
-MODE_RX = 0x101
+MODE_TX = 0x003
 MODE_LORA = 0x80
-
-# LoRa configuration values*
-MAX_POWER = 0xF0
-BANDWIDTH_500KHZ = 0x72
-SPREADING_FACTOR_7 = 0x74
-CODING_RATE_4_5 = 0x04
 
 # MSB settings
 MSB_1 = 0x80
@@ -63,16 +56,16 @@ def check_mode():
     print(f"Current mode: {current_mode}")
 
 try:
+    print("starting demo")
+    write_register(REG_OP_MODE, MODE_LORA | MODE_SLEEP)
+    check_mode()
+    sleep(5)
+    write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
+    check_mode()
+    sleep(5)
+    write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
+    check_mode()
     while True:
-        print("starting demo")
-        write_register(REG_OP_MODE, MODE_LORA)
-        check_mode()
-        sleep(5)
-        write_register(REG_OP_MODE, MODE_LORA | MODE_SLEEP)
-        check_mode()
-        sleep(5)
-        write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
-        check_mode()
         sleep(5)
 except KeyboardInterrupt:
     spi.close()
