@@ -11,9 +11,9 @@ CS_PIN = 25
 REG_OP_MODE = 0x01
 
 # LoRa operational modes
-MODE_SLEEP = 0x00
-MODE_STDBY = 0x01
-MODE_TX = 0x03
+MODE_LORA_SLEEP = 0x80
+MODE_LORA_STDBY = 0x81
+MODE_LORA_TX = 0x83
 MODE_LORA = 0x80
 
 # MSB settings
@@ -62,5 +62,6 @@ try:
         write_register(REG_OP_MODE, MODE_LORA)
         check_mode()
         sleep(5)
+        write_register(REG_OP_MODE, MODE_LORA_TX)
 except KeyboardInterrupt:
     spi.close()
