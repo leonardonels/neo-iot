@@ -59,10 +59,10 @@ try:
     print("starting demo")
     write_register(REG_OP_MODE, MODE_LORA | MODE_SLEEP)
     check_mode()
-    sleep(5)
+    sleep(1)
     write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
     check_mode()
-    sleep(5)
+    sleep(1)
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
     check_mode()
     while True:
