@@ -57,13 +57,13 @@ def check_mode():
 
 try:
     while True:
+        sleep(5)
         print("starting demo")
         write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
         check_mode()
         sleep(5)
-        write_register(REG_OP_MODE, 0x83)
+        write_register(REG_OP_MODE, MODE_TX)
         check_mode()
-        sleep(5)
         reset_lora()
 except KeyboardInterrupt:
     spi.close()
