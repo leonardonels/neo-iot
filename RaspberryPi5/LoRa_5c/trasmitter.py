@@ -90,6 +90,7 @@ def send_message(message):
         write_register(REG_FIFO, byte)
     write_register(REG_PAYLOAD_LENGTH, len(message))
     write_register(REG_OP_MODE, MODE_LORA | MODE_TX)
+    print("Message wronte")
 
     while not dio0_pin.is_active:
         sleep(0.1)
