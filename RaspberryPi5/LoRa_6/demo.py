@@ -8,29 +8,16 @@ DIO0_PIN = 27
 CS_PIN = 25
 
 # LoRa register addresses (consts)
-REG_FIFO = 0x00
 REG_OP_MODE = 0x01
-REG_PA_CONFIG = 0x09
-REG_FRF_MSB = 0x06
-REG_FRF_MID = 0x07
-REG_FRF_LSB = 0x08
-REG_MODEM_CONFIG1 = 0x1D
-REG_MODEM_CONFIG2 = 0x1E
-REG_MODEM_CONFIG3 = 0x26
-REG_PAYLOAD_LENGTH = 0x22
-REG_FIFO_TX_BASE_ADDR = 0x0E
-REG_FIFO_RX_BASE_ADDR = 0x0F
-REG_FIFO_ADDR_PTR = 0x0D
-REG_IRQ_FLAGS = 0x12
-REG_VERSION = 0x42
 
 # LoRa operational modes
 MODE_SLEEP = 0x00
 MODE_STDBY = 0x01
-MODE_TX = 0x83
+MODE_TX = 0x011
+MODE_RX = 0x101
 MODE_LORA = 0x80
 
-# LoRa configuration values
+# LoRa configuration values*
 MAX_POWER = 0xF0
 BANDWIDTH_500KHZ = 0x72
 SPREADING_FACTOR_7 = 0x74
@@ -51,6 +38,13 @@ spi.open(0, 0)
 spi.max_speed_hz = 500000   #500Hz
 
 #...
+# Reset LoRa module
+def reset_lora():
+    reset_pin.on()
+    sleep(0.1)
+    reset_pin.off()
+    sleep(0.1)
+
 # Function to write on LoRa register
 def write_register(address, data):
     cs_pin.on()
@@ -71,6 +65,13 @@ def check_mode():
 try:
     while True:
         print("starting demo")
+        write_register(REG_OP_MODE, MODE_LORA)
+        check_mode()
+        sleep(5)
+        write_register(REG_OP_MODE, MODE_LORA | MODE_SLEEP)
+        check_mode()
+        sleep(5)
+        write_register(REG_OP_MODE, MODE_LORA | MODE_STDBY)
         check_mode()
         sleep(5)
 except KeyboardInterrupt:
