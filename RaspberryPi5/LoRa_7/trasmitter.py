@@ -117,10 +117,6 @@ def send_message(message):
     # Wait for TxDone flag*
     while not dio0_pin.is_active:
         sleep(0.1)
-
-        write_register(REG_OP_MODE, 0xFF)
-        check_mode()
-
     print("TxDone flag received")
 
     # Clear TxDone flag
