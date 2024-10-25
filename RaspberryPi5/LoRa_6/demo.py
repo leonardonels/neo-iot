@@ -13,7 +13,7 @@ REG_OP_MODE = 0x01
 # LoRa operational modes
 MODE_SLEEP = 0x00
 MODE_STDBY = 0x01
-MODE_TX = 0x003
+MODE_TX = 0x03
 MODE_LORA = 0x80
 
 # MSB settings
