@@ -28,9 +28,8 @@ cs_pin = OutputDevice(CS_PIN, active_high=False)
 # SPI setup
 spi = spidev.SpiDev()
 spi.open(0, 0)
-spi.max_speed_hz = 5000000   #5 MHz
+spi.max_speed_hz = 5000000  # 5 MHz
 
-#...
 # Reset LoRa module
 def reset_lora():
     reset_pin.on()
@@ -56,12 +55,24 @@ def check_mode():
     print(f"Current mode: {current_mode}")
 
 try:
-    print("starting demo")
-    check_mode()
-    write_register(REG_OP_MODE, MODE_LORA)
+    print("Starting demo")
+    reset_lora()  # Ensure the module is reset before starting
+    write_register(REG_OP_MODE, MODE_LORA)  # Set to LoRa mode
+    sleep(1)  # Wait for the module to stabilize
+
+    check_mode()  # Check current mode
+
+    write_register(REG_OP_MODE, MODE_LORA_STDBY)  # Set to standby mode
+    sleep(1)
+
+    check_mode()  # Check current mode again
+    write_register(REG_OP_MODE, MODE_LORA_TX)  # Now set to TX mode
+    sleep(1)
+
+    check_mode()  # Check current mode after TX mode
+    
     while True:
-        sleep(5)
-        write_register(REG_OP_MODE, MODE_LORA_TX)
-        check_mode()
+        sleep(5)  # Keep checking mode every 5 seconds
+        check_mode()  # Optional: Continuously monitor the mode
 except KeyboardInterrupt:
     spi.close()
