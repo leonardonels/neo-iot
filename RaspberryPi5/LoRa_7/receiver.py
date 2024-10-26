@@ -30,6 +30,7 @@ MAX_POWER = 0xFF
 LOW_POWER = 0x70
 BANDWIDTH_500KHZ = 0x72
 SPREADING_FACTOR_7 = 0x74
+SPREADING_FACTOR_12 = 0xC0  # 1100 0000 in binario per impostare SF a 12
 CODING_RATE_4_5 = 0x04
 
 # DIO mapping values
@@ -58,7 +59,7 @@ def init_lora():
     check(REG_OP_MODE)
     write_register(REG_PA_CONFIG, LOW_POWER)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
-    write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
+    write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_12)
     write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)
     write_register(REG_DIO_MAPPING1, DIO1_MAPPING_RSSI | DIO2_MAPPING_SYNCADDR)
     write_register(REG_FIFO_RX_BASE_ADDR, 0x80)
