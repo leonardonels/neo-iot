@@ -53,6 +53,7 @@ spi.max_speed_hz = 1000000  # 1 MHz
 #...
 
 def init_lora():
+    sleep(5)
     reset_lora()
     write_register(REG_OP_MODE, MODE_LORA)
     check_mode()
@@ -94,6 +95,8 @@ def check_mode():
 
 # Send a message
 def send_message(message):
+    write_register(REG_OP_MODE, MODE_LORA)
+    check_mode()
     write_register(REG_FIFO_ADDR_PTR, 0x80)  # Set FIFO pointer to Tx base address
     print("FIFO pointer set")
 
