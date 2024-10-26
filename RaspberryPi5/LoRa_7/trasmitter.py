@@ -71,7 +71,7 @@ def reset_lora():
     reset_pin.off()
     sleep(0.1)
     reset_pin.on()
-    sleep(0.1)
+    sleep(7)
 
 # Function to write on LoRa register
 def write_register(address, data):
