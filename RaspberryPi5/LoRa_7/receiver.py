@@ -15,11 +15,22 @@ REG_DIO_MAPPING1 = 0x40
 REG_FIFO_RX_BASE_ADDR = 0x0F
 REG_IRQ_FLAGS = 0x12
 REG_VERSION = 0x42
+REG_PA_CONFIG = 0x09
+REG_MODEM_CONFIG1 = 0x1D
+REG_MODEM_CONFIG2 = 0x1E
+REG_MODEM_CONFIG3 = 0x26
 
 # Operational modes
 MODE_LORA_SLEEP = 0x80
 MODE_LORA_STDBY = 0x81
 MODE_LORA_RXCONT = 0x85  # RX continua
+
+# LoRa configuration values
+MAX_POWER = 0xFF
+LOW_POWER = 0x70
+BANDWIDTH_500KHZ = 0x72
+SPREADING_FACTOR_7 = 0x74
+CODING_RATE_4_5 = 0x04
 
 # DIO mapping values
 DIO1_MAPPING_RSSI = 0x10  # Mapping for RSSI clock on DIO1
@@ -45,6 +56,10 @@ def init_lora():
     check(REG_OP_MODE)
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
     check(REG_OP_MODE)
+    write_register(REG_PA_CONFIG, LOW_POWER)
+    write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
+    write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
+    write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)
     write_register(REG_DIO_MAPPING1, DIO1_MAPPING_RSSI | DIO2_MAPPING_SYNCADDR)
     write_register(REG_FIFO_RX_BASE_ADDR, 0x80)
     print("Module initialized in continuous RX mode.")
