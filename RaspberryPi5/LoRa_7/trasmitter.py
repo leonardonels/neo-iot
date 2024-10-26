@@ -60,6 +60,7 @@ def init_lora():
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
     check_mode()
     write_register(REG_PA_CONFIG, LOW_POWER)
+    write_register(REG_PLL, 0x96)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
     write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
     write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)
