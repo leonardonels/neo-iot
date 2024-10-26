@@ -72,10 +72,10 @@ def init_lora():
 
     # Reset LoRa module
 def reset_lora():
+    sleep(7)
     reset_pin.off()
     sleep(0.1)
     reset_pin.on()
-    sleep(7)
 
 # Function to write on LoRa register
 def write_register(address, data):
@@ -94,7 +94,7 @@ def read_register(address):
 
 def check(REG):
     current_reg = read_register(REG)
-    print(f"Current mode: {current_reg}")
+    print(f"Current {REG}: {current_reg}")
 
 # Send a message
 def send_message(message):
