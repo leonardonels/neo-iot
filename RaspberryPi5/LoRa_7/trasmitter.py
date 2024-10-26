@@ -53,7 +53,6 @@ spi.max_speed_hz = 1000000  # 1 MHz
 #...
 
 def init_lora():
-    sleep(5)
     reset_lora()
     write_register(REG_OP_MODE, MODE_LORA)
     check_mode()
@@ -108,9 +107,6 @@ def send_message(message):
     print("Payload length set")
 
     # Start transmission
-    write_register(REG_OP_MODE, MODE_LORA)
-    check_mode()
-    sleep(0.1)
     write_register(REG_OP_MODE, MODE_LORA_TX)
     sleep(0.1)  # Ritardo per permettere al modulo di passare alla modalità di trasmissione
     check_mode()  # Controlla di nuovo la modalità
