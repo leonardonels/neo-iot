@@ -38,9 +38,13 @@ spi.max_speed_hz = 1000000  # 1 MHz
 
 # Initialize LoRa module
 def init_lora():
+    check(REG_OP_MODE)
     reset_lora()
+    check(REG_OP_MODE)
     write_register(REG_OP_MODE, MODE_LORA_SLEEP)
+    check(REG_OP_MODE)
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
+    check(REG_OP_MODE)
     write_register(REG_DIO_MAPPING1, DIO1_MAPPING_RSSI | DIO2_MAPPING_SYNCADDR)
     write_register(REG_FIFO_RX_BASE_ADDR, 0x80)
     print("Module initialized in continuous RX mode.")
@@ -69,6 +73,7 @@ def read_register(address):
 # Start continuous reception
 def receive_message_continuous():
     write_register(REG_OP_MODE, MODE_LORA_RXCONT)
+    check(REG_OP_MODE)
     print("Listening for messages in continuous RX mode...")
 
     while True:
@@ -94,6 +99,10 @@ def check_version():
         print("LoRa module recognized.")
     else:
         print("Warning: unexpected version. Check connections.")
+    
+def check(REG):
+    current_reg = read_register(REG)
+    print(f"Current {REG}: {current_reg}")
 
 try:
     init_lora()
