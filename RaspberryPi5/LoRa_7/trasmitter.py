@@ -20,6 +20,7 @@ REG_FIFO_RX_BASE_ADDR = 0x0F
 REG_FIFO_CURRENT_ADDR = 0x10
 REG_PAYLOAD_LENGTH = 0x22
 REG_IRQ_FLAGS = 0x12
+REG_PLL = 0x70
 
 REG_VERSION = 0x42  # Registro della versione del chip
 
@@ -92,6 +93,10 @@ def check_mode():
     current_mode = read_register(REG_OP_MODE)
     print(f"Current mode: {current_mode}")
 
+def check_pll():
+    current_pll = read_register(REG_PLL)
+    print(f"Current pll: {current_pll}")
+
 # Send a message
 def send_message(message):
     write_register(REG_FIFO_ADDR_PTR, 0x80)  # Set FIFO pointer to Tx base address
@@ -138,6 +143,7 @@ def check_version():
 try:
     init_lora()
     check_version()
+    check_pll()
     while True:
         send_message("Hello World!")
         print("Message sent: Hello World!")
