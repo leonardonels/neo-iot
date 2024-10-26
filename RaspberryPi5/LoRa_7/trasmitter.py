@@ -20,7 +20,7 @@ REG_FIFO_RX_BASE_ADDR = 0x0F
 REG_FIFO_CURRENT_ADDR = 0x10
 REG_PAYLOAD_LENGTH = 0x22
 REG_IRQ_FLAGS = 0x12
-REG_PLL = 0x70
+REG_DIO_MAPPING1 = 0x40
 
 REG_VERSION = 0x42  # Registro della versione del chip
 
@@ -30,6 +30,7 @@ LOW_POWER = 0x70
 BANDWIDTH_500KHZ = 0x72
 SPREADING_FACTOR_7 = 0x74
 CODING_RATE_4_5 = 0x04
+DIO0_MAPPING_TX = 0x40
 
 # LoRa operational modes
 MODE_LORA_SLEEP = 0x80
@@ -56,11 +57,12 @@ spi.max_speed_hz = 1000000  # 1 MHz
 def init_lora():
     reset_lora()
     write_register(REG_OP_MODE, MODE_LORA)
-    check_mode()
+    check(REG_OP_MODE)
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
-    check_mode()
+    check(REG_OP_MODE)
+    write_register(REG_DIO_MAPPING1, DIO0_MAPPING_TX)
+    check(REG_DIO_MAPPING1)
     write_register(REG_PA_CONFIG, LOW_POWER)
-    write_register(REG_PLL, 0x96)
     write_register(REG_MODEM_CONFIG1, BANDWIDTH_500KHZ)
     write_register(REG_MODEM_CONFIG2, SPREADING_FACTOR_7)
     write_register(REG_MODEM_CONFIG3, CODING_RATE_4_5)
@@ -90,13 +92,9 @@ def read_register(address):
     cs_pin.on()
     return response[0]
 
-def check_mode():
-    current_mode = read_register(REG_OP_MODE)
-    print(f"Current mode: {current_mode}")
-
-def check_pll():
-    current_pll = read_register(REG_PLL)
-    print(f"Current pll: {current_pll}")
+def check(REG):
+    current_reg = read_register(REG)
+    print(f"Current mode: {current_reg}")
 
 # Send a message
 def send_message(message):
@@ -115,7 +113,7 @@ def send_message(message):
     # Start transmission
     write_register(REG_OP_MODE, MODE_LORA_TX)
     sleep(0.1)  # Ritardo per permettere al modulo di passare alla modalità di trasmissione
-    check_mode()  # Controlla di nuovo la modalità
+    check(REG_OP_MODE)  # Controlla di nuovo la modalità
     print("Transmission started")
 
     # Check mode after setting to TX
@@ -144,7 +142,6 @@ def check_version():
 try:
     init_lora()
     check_version()
-    check_pll()
     while True:
         send_message("Hello World!")
         print("Message sent: Hello World!")
