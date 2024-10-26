@@ -14,7 +14,7 @@ void setup() {
 
   //setup LoRa NSS, RST and DIO0 pins for receiver module
   LoRa.setPins(NSS, RST, DIO0);
-  LoRa.setFrequency(5E6); //5 MHz
+  //LoRa.setFrequency(5E6); //5 MHz
 
   if (!LoRa.begin(433E6)) {
     Serial.println("Starting LoRa failed!");
@@ -24,6 +24,9 @@ void setup() {
   LoRa.setSignalBandwidth(500E3);
   LoRa.setSpreadingFactor(7);
   LoRa.setCodingRate4(5);
+
+  //LoRa.dumpRegisters(Serial);
+  Serial.println("LoRa Receiver initated!");
 }
 
 void loop() {
