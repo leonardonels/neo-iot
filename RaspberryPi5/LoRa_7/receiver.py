@@ -52,7 +52,7 @@ spi.max_speed_hz = 1000000  # 1 MHz
 # Initialize LoRa module
 def init_lora():
     reset_lora()
-    write_register(REG_OP_MODE, MODE_LORA)
+    write_register(REG_OP_MODE, MODE_LORA_SLEEP)
     check(REG_OP_MODE)
     write_register(REG_OP_MODE, MODE_LORA_STDBY)
     check(REG_OP_MODE)
