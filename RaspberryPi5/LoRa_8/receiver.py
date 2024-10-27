@@ -163,7 +163,7 @@ def on_receive():
     print("Message received!")
 
 try:
-    reset_pin, dio0_pin, cs_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
+    cs_pin, reset_pin, dio0_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
     spi=set_spi(SPI_FREQUENCY)
 
     begin()
