@@ -156,7 +156,7 @@ def set_module_on_receive():
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
 
 def receive():
-    if dio0_pin.is_active():
+    if dio0_pin:
         on_receive()
 
 def on_receive():
