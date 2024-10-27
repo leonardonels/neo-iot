@@ -25,13 +25,14 @@ void setup() {
   LoRa.setSpreadingFactor(7);
   LoRa.setCodingRate4(5);
 
-  //LoRa.dumpRegisters(Serial);
+  LoRa.dumpRegisters(Serial);
   Serial.println("LoRa Receiver initated!");
 }
 
 void loop() {
   // try to parse packet
   int packetSize = LoRa.parsePacket();
+  //LoRa.dumpRegisters(Serial);
   if (packetSize) {
     // received a packet
     Serial.print("Received packet '");
