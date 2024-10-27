@@ -51,6 +51,7 @@ REG_DETECTION_THRESHOLD     = 0x37
 REG_SYNC_WORD               = 0x39
 REG_INVERTIQ2               = 0x3b
 REG_DIO_MAPPING_1           = 0x40
+REG_DIO_MAPPING_2           = 0x41
 REG_VERSION                 = 0x42
 REG_PA_DAC                  = 0x4d
 
@@ -64,6 +65,12 @@ MODE_RX_SINGLE              = 0x06
 
 # PA config
 PA_BOOST                    = 0x80
+PA_OPTIMAL_POWER                    = 0x8F
+
+LNA                         = 0x23
+MAX_PAYLOADLENGHT           = 0x01
+PACKET_CONFIG_2             = 0xC3
+DIO_MAPPING_1               = 0x00
 
 # IRQ masks
 IRQ_TX_DONE_MASK            = 0x08
@@ -119,13 +126,15 @@ def begin():
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_SLEEP)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
 
+    write_register(REG_PA_CONFIG, PA_OPTIMAL_POWER)
+
     frf = int((FREQUENCY*(2**19))/F_XOSC)
     print(f"FRF (DEC): {frf}")
     print(f"FRF (HEX): {hex(frf)}")    
     msb = (frf >> 16) & 0xFF   # RegFrfMsb
     mid = (frf >> 8) & 0xFF    # RegFrfMid
     lsb = frf & 0xFF           # RegFrfLsb
-    print(f"RegFrfMsb (MSB): {msb} (DEC), {hex(msb)} (HEX)")
+    print(f"RegFrfMsb (MSB): {msb} DEC), {hex(msb)} (HEX)")
     print(f"RegFrfMid (MID): {mid} (DEC), {hex(mid)} (HEX)")
     print(f"RegFrfLsb (LSB): {lsb} (DEC), {hex(lsb)} (HEX)")
 
@@ -136,8 +145,22 @@ def begin():
     write_register(REG_MODEM_CONFIG_1, BANDWIDTH | CODING_RATE)
     write_register(REG_MODEM_CONFIG_2, SPREADING_FACTOR)
 
+    write_register(REG_DIO_MAPPING_1, DIO_MAPPING_1)
+    write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
+    write_register(REG_LNA, LNA)
+
 def check(REG):
     return read_register(REG)
+
+def set_module_on_receive():
+    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
+
+def receive():
+    if dio0_pin.is_active():
+        on_receive()
+
+def on_receive():
+    print("Message received!")
 
 try:
     reset_pin, dio0_pin, cs_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
@@ -145,6 +168,10 @@ try:
 
     begin()
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
-    
+
+    while True:
+        receive()
+        sleep(0.1)
+
 except KeyboardInterrupt:
     spi.close()
