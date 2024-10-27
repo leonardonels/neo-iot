@@ -1,6 +1,6 @@
 import spidev
 from gpiozero import OutputDevice, InputDevice
-from time import sleep
+from time import sleep, time
 
 # Pin configuration
 RST_PIN                     = 22
@@ -175,15 +175,19 @@ def on_receive():
     # Ripulisci il buffer (resetta il registro IRQ)
     write_register(REG_IRQ_FLAGS, 0xFF)  # Resetta tutti i flag di interrupt
 
-
-# Funzione principale di ricezione
-def receive():
+def receive(timeout=5):
     set_module_on_receive()
-    
+    print(f"Waiting for messages...")
+
+    start_time = time()  # Registra il tempo di inizio
     while True:
         if dio0_pin.is_active:  # Controlla se DIO0 è attivo
-            on_receive()  # Gestisci la ricezione
-            sleep(0.1)  # Aspetta un attimo prima di verificare di nuovo
+            on_receive()  # Gestisci la ricezione del messaggio
+            break  # Esci dal ciclo dopo aver ricevuto il messaggio
+        elif time() - start_time > timeout:  # Controlla il timeout
+            print("Timeout: No messages received within the specified time.")
+            break  # Esci dal ciclo in caso di timeout
+        sleep(0.1)  # Aspetta un attimo prima di controllare di nuovo
 
 try:
     cs_pin, reset_pin, dio0_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
