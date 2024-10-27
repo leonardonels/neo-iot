@@ -154,6 +154,7 @@ def check(REG):
 
 def set_module_on_receive():
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
+    print(f"Module ready to receive, mode: {check(REG_OP_MODE)}")
 
 def receive():
     if dio0_pin:
