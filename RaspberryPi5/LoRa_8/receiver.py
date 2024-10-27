@@ -175,7 +175,7 @@ def on_receive():
     # Ripulisci il buffer (resetta il registro IRQ)
     write_register(REG_IRQ_FLAGS, 0xFF)  # Resetta tutti i flag di interrupt
 
-def receive(timeout=5):
+def receive(timeout):
     set_module_on_receive()
     print(f"Waiting for messages...")
 
@@ -197,7 +197,7 @@ try:
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
 
     while True:
-        receive()
+        receive(timeout=5)
 
 except KeyboardInterrupt:
     spi.close()
