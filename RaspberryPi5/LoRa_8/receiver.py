@@ -167,8 +167,14 @@ def on_receive():
     message = []
     for _ in range(nb_bytes):
         message.append(read_register(REG_FIFO))
-    
-    print(f"Message received: {message}")
+
+    # Ricostruire il messaggio in una stringa (se i dati sono ASCII)
+    reconstructed_message = ''.join(chr(byte) for byte in message)
+    print(f"Message received: {reconstructed_message}")
+
+    # Ripulisci il buffer (resetta il registro IRQ)
+    write_register(REG_IRQ_FLAGS, 0xFF)  # Resetta tutti i flag di interrupt
+
 
 # Funzione principale di ricezione
 def receive():
