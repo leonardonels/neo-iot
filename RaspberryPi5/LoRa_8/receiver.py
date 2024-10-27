@@ -152,28 +152,41 @@ def begin():
 def check(REG):
     return read_register(REG)
 
+# Imposta il modulo in modalità ricezione continua
 def set_module_on_receive():
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
-    print(f"Module ready to receive, mode: {check(REG_OP_MODE)}")
+    print("Module set to continuous receive mode")
 
+# Funzione per gestire la ricezione di un messaggio
+def on_receive():
+    # Legge il numero di byte ricevuti
+    nb_bytes = read_register(REG_RX_NB_BYTES)
+    print(f"Received {nb_bytes} bytes")
+
+    # Leggi il messaggio dal registro FIFO
+    message = []
+    for _ in range(nb_bytes):
+        message.append(read_register(REG_FIFO))
+    
+    print(f"Message received: {message}")
+
+# Funzione principale di ricezione
 def receive():
     set_module_on_receive()
-    if dio0_pin:
-        on_receive()
-
-def on_receive():
-    print("Message received!")
+    
+    while True:
+        if dio0_pin.is_active:  # Controlla se DIO0 è attivo
+            on_receive()  # Gestisci la ricezione
+            sleep(0.1)  # Aspetta un attimo prima di verificare di nuovo
 
 try:
     cs_pin, reset_pin, dio0_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
-    spi=set_spi(SPI_FREQUENCY)
+    spi = set_spi(SPI_FREQUENCY)
 
     begin()
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
 
-    while True:
-        receive()
-        sleep(0.1)
+    receive()
 
 except KeyboardInterrupt:
     spi.close()
