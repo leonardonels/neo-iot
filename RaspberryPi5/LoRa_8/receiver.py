@@ -183,7 +183,7 @@ def receive(timeout):
     while True:
         if dio0_pin.is_active:  # Controlla se DIO0 è attivo
             on_receive()  # Gestisci la ricezione del messaggio
-            break  # Esci dal ciclo dopo aver ricevuto il messaggio
+            start_time = time()
         elif time() - start_time > timeout:  # Controlla il timeout
             print("Timeout: No messages received within the specified time.")
             break  # Esci dal ciclo in caso di timeout
@@ -196,8 +196,7 @@ try:
     begin()
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
 
-    while True:
-        receive(timeout=5)
+    receive(timeout=5)
 
 except KeyboardInterrupt:
     spi.close()
