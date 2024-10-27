@@ -1,41 +1,45 @@
 #include <SPI.h>
 #include <LoRa.h>
 
-// Configurazione pin (modifica se necessario)
-const int csPin = 10;    // NSS
-const int resetPin = 9;  // RESET
-const int dioPin = 2;    // DIO0
+//define the pins used by the transceiver module
+#define NSS 10
+#define RST 9
+#define DIO0 2
+
+int counter = 0;
 
 void setup() {
+  //Initialize the serial monitor
   Serial.begin(9600);
   while (!Serial);
 
-  // Configurazione pin
-  LoRa.setPins(csPin, resetPin, dioPin);
+  Serial.println("LoRa Sender");
 
-  // Inizializzazione modulo LoRa
-  if (!LoRa.begin(433E6)) { // Frequenza 433 MHz, assicurati che sia la stessa del trasmettitore
-    Serial.println("LoRa init failed. Check your connections.");
-    while (true);
+  //setup LoRa NSS, RST and DIO0 pins for transceiver module
+  LoRa.setPins(NSS, RST, DIO0);
+  //LoRa.setSPIFrequency(5E6); //5 MHz
+
+  // select the frequency according to your module. most commom frequences are 433E6,866E6 and 915E6
+  if (!LoRa.begin(433E6)) {
+    Serial.println("Starting LoRa failed!");
+    while (1);
   }
-  
-  LoRa.setSpreadingFactor(7);        // Spreading Factor SF7
-  LoRa.setSignalBandwidth(500E3);    // Banda 500 kHz
-  LoRa.setCodingRate4(5);            // Coding Rate 4/5
 
-  Serial.println("LoRa Receiver initialized.");
+  LoRa.setSignalBandwidth(500E3);
+  LoRa.setSpreadingFactor(7);
+  LoRa.setCodingRate4(5);
 }
 
 void loop() {
-  // Controllo per nuovo pacchetto ricevuto
-  int packetSize = LoRa.parsePacket();
-  if (packetSize) {
-    // Messaggio ricevuto
-    Serial.print("Received packet: ");
-    while (LoRa.available()) {
-      char incoming = (char)LoRa.read();
-      Serial.print(incoming); // Stampa messaggio ricevuto
-    }
-    Serial.println();
-  }
+  Serial.print("Sending packet: ");
+  Serial.println(counter);
+  
+  // send packet 
+  LoRa.beginPacket();
+  LoRa.print(counter);
+  LoRa.print(": Hello World!");
+  LoRa.endPacket();
+
+  counter++;
+  delay(2000);
 }
