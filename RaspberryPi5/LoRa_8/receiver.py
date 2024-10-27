@@ -196,7 +196,8 @@ try:
     begin()
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
 
-    receive()
+    while True:
+        receive()
 
 except KeyboardInterrupt:
     spi.close()
