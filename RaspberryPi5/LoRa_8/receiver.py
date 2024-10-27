@@ -157,6 +157,7 @@ def set_module_on_receive():
     print(f"Module ready to receive, mode: {check(REG_OP_MODE)}")
 
 def receive():
+    set_module_on_receive()
     if dio0_pin:
         on_receive()
 
