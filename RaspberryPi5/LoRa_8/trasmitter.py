@@ -191,6 +191,19 @@ def receive(timeout):
             break  # Esci dal ciclo in caso di timeout
         sleep(0.1)  # Aspetta un attimo prima di controllare di nuovo
 
+def write_on_fifo(message):
+    pass
+
+def send(message):
+    """
+    mode_tx
+    payloadlenght?
+    regdetectionoptimise?
+    diomapping to txdone ready
+    """
+    
+    pass
+
 try:
     cs_pin, reset_pin, dio0_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
     spi = set_spi(SPI_FREQUENCY)
@@ -198,7 +211,7 @@ try:
     begin()
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
 
-    receive(timeout=5)
+    #receive(timeout=5)
 
 except KeyboardInterrupt:
     spi.close()
