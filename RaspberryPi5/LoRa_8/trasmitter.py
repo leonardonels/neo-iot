@@ -155,6 +155,8 @@ def check(REG):
 
 # Imposta il modulo in modalità ricezione continua
 def set_module_on_receive():
+    if check(REG_DIO_MAPPING_1)!=DIO_MAPPING_RX:
+        write_register(REG_DIO_MAPPING_1, DIO_MAPPING_RX)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
     print("Module set to continuous receive mode")
 
@@ -196,10 +198,12 @@ def write_on_fifo(message):
 
 def send(message):
     """
-    mode_tx
     payloadlenght?
     regdetectionoptimise?
     diomapping to txdone ready
+    check for lora_stndby or sleep
+    write on fifo
+    mode_tx
     """
     
     pass
