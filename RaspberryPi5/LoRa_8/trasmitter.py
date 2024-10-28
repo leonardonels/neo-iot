@@ -204,6 +204,9 @@ def send(message):
     check for lora_stndby or sleep
     write on fifo
     mode_tx
+    wait for txdone
+    reset tx done
+    exit
     """
     
     pass
