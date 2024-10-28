@@ -199,14 +199,18 @@ def write_on_fifo(message):
 def send(message):
     """
     payloadlenght?
-    regdetectionoptimise?
+    regdetectionoptimise? continous or packet mode?
+    
     diomapping to txdone ready
-    check for lora_stndby or sleep
+    check for lora_stndby
     write on fifo
     mode_tx
     wait for txdone
     reset tx done
     exit
+
+    note:
+    fifo full warning
     """
     
     pass
