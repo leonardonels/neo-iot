@@ -216,6 +216,10 @@ try:
     print(f"Module initiated with mode {check(REG_OP_MODE)}")
 
     #receive(timeout=5)
+    packet=0
+    while True:
+        send(f"{packet}: Hello, world!")
+        packet=+1
 
 except KeyboardInterrupt:
     spi.close()
