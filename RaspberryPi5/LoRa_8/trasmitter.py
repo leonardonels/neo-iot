@@ -199,35 +199,23 @@ def write_on_fifo(data):
     cs_pin.on()
 
 def send(message):
-    """
-    regdetectionoptimise to 0xC3
-    use packet mode
-
-    diomapping to txdone ready
-    check for lora_stndby
-    pakectlenght register to 0
-    write on fifo
-    update pakcet lenght register
-    set op mode to mode_tx
-    wait for txdone
-    reset tx done
-    exit
-
-    note:
-    fifo full warning
-    """
     write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
     print(f"det_optimise: {check(REG_DETECTION_OPTIMIZE)}")
+
     write_register(REG_PAYLOAD_LENGTH, 0x00)
     print(f"payload_len to 0: {check(REG_PAYLOAD_LENGTH)}")
+
     for byte in message.encode():
         write_register(REG_FIFO, byte)
     print("Message written to FIFO")
+
     payload_length = len(message)
     write_register(REG_PAYLOAD_LENGTH, payload_length)
     print(f"payload_len {payload_length}: {check(REG_PAYLOAD_LENGTH)}")
+
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
     print(f"mode: {check(REG_OP_MODE)}")
+    
     if not dio0_pin.is_active:
         pass
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
@@ -244,10 +232,10 @@ try:
     #receive(timeout=5)
     packet=0
     while True:
-        send("Hello, world!")
+        send(f"{packet}: Hello, world!")
         print(f"{packet}: Hello, world!")
         packet+=1
-        sleep(2)
+        sleep(5)
 
 except KeyboardInterrupt:
     spi.close()
