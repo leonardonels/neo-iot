@@ -221,6 +221,10 @@ def send(message):
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
     print(f"modeTX: {check(REG_OP_MODE)}")
 
+    # check for th enumber of TXdone received
+    # the sleep(0.1) function usaed later can be removed if
+    # the lora module sends back more than one TXdone and
+    # its possible to simply wait for all of them
     if not dio0_pin.is_active:
         pass
     sleep(0.1)
