@@ -209,11 +209,11 @@ def send(message):
         payload_length+=1
     print("Message written to FIFO")
 
-    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
-    print(f"mode: {check(REG_OP_MODE)}")
-
     write_register(REG_PAYLOAD_LENGTH, payload_length)
     print(f"payload_len {payload_length}: {check(REG_PAYLOAD_LENGTH)}")
+
+    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
+    print(f"modeTX: {check(REG_OP_MODE)}")
 
     if not dio0_pin.is_active:
         pass
