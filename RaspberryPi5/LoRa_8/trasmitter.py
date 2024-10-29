@@ -220,7 +220,6 @@ def send(message):
     write_on_fifo([ord(c) for c in message])  # Conversione del messaggio in lista di byte
     payload_length = len(message)
     write_register(REG_PAYLOAD_LENGTH, payload_length)
-    spi.write_register(0x01, 0x83)  # Registro 0x01 per impostare modalità trasmissione
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
     while not dio0_pin.is_active:
         pass  # Attesa che DIO0 vada a HIGH, indicando fine trasmissione
