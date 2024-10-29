@@ -223,6 +223,7 @@ def send(message):
 
     if not dio0_pin.is_active:
         pass
+    sleep(0.1)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
     print(f"mode: {check(REG_OP_MODE)}")
 
@@ -240,7 +241,7 @@ try:
         send(f"{packet}: Hello, world!")
         print(f"{packet}: Hello, world!")
         packet+=1
-        sleep(5)
+        sleep(3)
 
 except KeyboardInterrupt:
     spi.close()
