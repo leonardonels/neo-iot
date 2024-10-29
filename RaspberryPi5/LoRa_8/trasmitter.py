@@ -201,12 +201,12 @@ def send(message):
     write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_TX_BASE_ADDR))
 
     write_register(REG_PAYLOAD_LENGTH, 0x00)
-    write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_ADDR_PTR)-1)
     print(f"payload_len to 0: {check(REG_PAYLOAD_LENGTH)}")
 
     payload_length = 0
     for byte in message.encode():
         write_register(REG_FIFO, byte)
+        write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_ADDR_PTR)-1)
         print(f"fifo {byte}: {check(REG_FIFO)}")
         payload_length+=1
     print("Message written to FIFO")

@@ -46,26 +46,18 @@ void loop() {
 
 void onReceive(int packetSize) {
   // received a packet
-  Serial.print("Received packet ");
+  Serial.print("Received packet '");
 
   //LoRa.dumpRegisters(Serial);
 
   // read packet
-  //for (int i = 0; i < packetSize; i++) {
-  //  Serial.print((char)LoRa.read());
-  //}
+  for (int i = 0; i < packetSize; i++) {
+    Serial.print((char)LoRa.read());
+  }
 
   // print RSSI of packet
-  //Serial.print("' with RSSI ");
-  //Serial.println(LoRa.packetRssi());
-
-  // Stampa il contenuto dell'intero buffer come array di byte
-    Serial.print("\nBuffer ricevuto (hex): ");
-    for (int i = 0; i < packetSize; i++) {
-      Serial.print(LoRa.read(), HEX);   // Stampa ogni byte in formato esadecimale
-      Serial.print(" ");
-    }
-    Serial.println(); // Nuova riga dopo il buffer in esadecimale
+  Serial.print("' with RSSI ");
+  Serial.println(LoRa.packetRssi());
 }
 
 /*
