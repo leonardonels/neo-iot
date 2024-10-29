@@ -72,6 +72,8 @@ MAX_PAYLOADLENGHT           = 0x01
 PACKET_CONFIG_2             = 0xC3
 DIO_MAPPING_RX              = 0x00
 DIO_MAPPING_TX              = 0x40  #check with lora.regdump()
+TX_BASE_ADDRESS             = 0x80
+RX_BASE_ADDRESS             = 0x00
 
 # IRQ masks
 IRQ_TX_DONE_MASK            = 0x08
@@ -149,6 +151,8 @@ def begin():
     write_register(REG_DIO_MAPPING_1, DIO_MAPPING_RX)   # 0x00
     write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
     write_register(REG_LNA, LNA)
+    write_register(REG_FIFO_TX_BASE_ADDR, TX_BASE_ADDRESS)
+    write_register(REG_FIFO_RX_BASE_ADDR, RX_BASE_ADDRESS)
 
 def check(REG):
     return read_register(REG)
