@@ -197,12 +197,11 @@ def send(message):
     write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
     print(f"det_optimise: {check(REG_DETECTION_OPTIMIZE)}")
 
-    print(f"tx base address: {check(REG_FIFO_TX_BASE_ADDR)}")
+    #print(f"tx base address: {check(REG_FIFO_TX_BASE_ADDR)}")
     write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_TX_BASE_ADDR))
 
     write_register(REG_PAYLOAD_LENGTH, 0x00)
     print(f"payload_len to 0: {check(REG_PAYLOAD_LENGTH)}")
-
 
     payload_length = 0
     for byte in message.encode():
@@ -216,7 +215,6 @@ def send(message):
     write_register(REG_PAYLOAD_LENGTH, payload_length)
     print(f"payload_len {payload_length}: {check(REG_PAYLOAD_LENGTH)}")
 
-    
     if not dio0_pin.is_active:
         pass
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
