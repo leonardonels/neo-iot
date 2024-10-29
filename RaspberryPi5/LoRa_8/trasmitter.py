@@ -202,11 +202,12 @@ def send(message):
     write_register(REG_PAYLOAD_LENGTH, 0x00)
     print(f"payload_len to 0: {check(REG_PAYLOAD_LENGTH)}")
 
+    payload_length = 0
     for byte in message.encode():
         write_register(REG_FIFO, byte)
+        payload_length+=1
     print("Message written to FIFO")
 
-    payload_length = len(message)+5
     write_register(REG_PAYLOAD_LENGTH, payload_length)
     print(f"payload_len {payload_length}: {check(REG_PAYLOAD_LENGTH)}")
 
