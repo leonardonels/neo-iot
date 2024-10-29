@@ -202,6 +202,8 @@ def send(message):
     write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
     print(f"det_optimise: {check(REG_DETECTION_OPTIMIZE)}")
 
+    write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_TX_BASE_ADDR))
+
     write_register(REG_PAYLOAD_LENGTH, 0x00)
     print(f"payload_len to 0: {check(REG_PAYLOAD_LENGTH)}")
 
