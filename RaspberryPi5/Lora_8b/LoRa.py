@@ -62,7 +62,7 @@ IRQ_PAYLOAD_CRC_ERROR_MASK  = 0x20
 IRQ_RX_DONE_MASK            = 0x40
 
 class LoRa:
-    def __init__(self, cs_pin=25, rst_pin=22, dio0_pin=27, frequency=8000000):
+    def __main__(self, cs_pin=25, rst_pin=22, dio0_pin=27, frequency=8000000):
         # Configurazioni iniziali
         self.CS_PIN = cs_pin
         self.RST_PIN = rst_pin
