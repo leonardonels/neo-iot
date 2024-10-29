@@ -217,16 +217,22 @@ def send(message):
     fifo full warning
     """
     write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
+    print(f"det_optimise: {check(REG_DETECTION_OPTIMIZE)}")
     write_register(REG_PAYLOAD_LENGTH, 0x00)
+    print(f"payload_len to 0: {check(REG_PAYLOAD_LENGTH)}")
     for byte in message.encode():
         write_register(REG_FIFO, byte)
     print("Message written to FIFO")
     payload_length = len(message)
     write_register(REG_PAYLOAD_LENGTH, payload_length)
+    print(f"payload_len {payload_length}: {check(REG_PAYLOAD_LENGTH)}")
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
+    print(f"mode: {check(REG_OP_MODE)}")
     if not dio0_pin.is_active:
         pass
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
+    print(f"mode: {check(REG_OP_MODE)}")
+
 
 try:
     cs_pin, reset_pin, dio0_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
@@ -240,7 +246,8 @@ try:
     while True:
         send("Hello, world!")
         print(f"{packet}: Hello, world!")
-        packet=+1
+        packet+=1
+        sleep(2)
 
 except KeyboardInterrupt:
     spi.close()
