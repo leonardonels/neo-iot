@@ -194,9 +194,7 @@ def receive(timeout):
         sleep(0.1)  # Aspetta un attimo prima di controllare di nuovo
 
 def write_on_fifo(message):
-    cs_pin.off()
     write_register(REG_FIFO, message)
-    cs_pin.on()
 
 def send(message):
     """
