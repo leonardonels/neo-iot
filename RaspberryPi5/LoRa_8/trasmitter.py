@@ -198,13 +198,14 @@ def write_on_fifo(message):
 
 def send(message):
     """
-    payloadlenght?
-    regdetectionoptimise? continous or packet mode?
-    
+    regdetectionoptimise? continous or packet mode? 0xC3
+
     diomapping to txdone ready
     check for lora_stndby
+    pakectlenght register to 0
     write on fifo
-    mode_tx
+    update pakcet lenght register
+    set op mode to mode_tx
     wait for txdone
     reset tx done
     exit
