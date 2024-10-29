@@ -194,11 +194,14 @@ def receive(timeout):
         sleep(0.1)  # Aspetta un attimo prima di controllare di nuovo
 
 def write_on_fifo(message):
-    pass
+    cs_pin.off()
+    write_register(REG_FIFO, message)
+    cs_pin.on()
 
 def send(message):
     """
-    regdetectionoptimise? continous or packet mode? 0xC3
+    regdetectionoptimise to 0xC3
+    use packet mode
 
     diomapping to txdone ready
     check for lora_stndby
@@ -213,8 +216,15 @@ def send(message):
     note:
     fifo full warning
     """
-    
-    pass
+    write_register(REG_PAYLOAD_LENGTH, 0x00)
+    write_on_fifo([ord(c) for c in message])  # Conversione del messaggio in lista di byte
+    payload_length = len(message)
+    write_register(REG_PAYLOAD_LENGTH, payload_length)
+    spi.write_register(0x01, 0x83)  # Registro 0x01 per impostare modalità trasmissione
+    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
+    while not dio0_pin.is_active:
+        pass  # Attesa che DIO0 vada a HIGH, indicando fine trasmissione
+    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
 
 try:
     cs_pin, reset_pin, dio0_pin = set_pins(CS_PIN, RST_PIN, DIO0_PIN)
@@ -226,7 +236,8 @@ try:
     #receive(timeout=5)
     packet=0
     while True:
-        send(f"{packet}: Hello, world!")
+        send("Hello, world!")
+        print(f"{packet}: Hello, world!")
         packet=+1
 
 except KeyboardInterrupt:
