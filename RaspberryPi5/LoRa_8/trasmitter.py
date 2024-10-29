@@ -193,11 +193,6 @@ def receive(timeout):
             break  # Esci dal ciclo in caso di timeout
         sleep(0.1)  # Aspetta un attimo prima di controllare di nuovo
 
-def write_on_fifo(data):
-    cs_pin.off()
-    spi.xfer([0x00] + data)  # 0x00 è l'indirizzo del buffer FIFO
-    cs_pin.on()
-
 def send(message):
     write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
     print(f"det_optimise: {check(REG_DETECTION_OPTIMIZE)}")
