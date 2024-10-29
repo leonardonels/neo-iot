@@ -208,11 +208,11 @@ def send(message):
         write_register(REG_FIFO, byte)
         payload_length+=1
     print("Message written to FIFO")
+    print(f"fifo: {check(REG_FIFO)}")
 
     write_register(REG_PAYLOAD_LENGTH, payload_length)
     print(f"payload_len {payload_length}: {check(REG_PAYLOAD_LENGTH)}")
     
-    sleep(0.1)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
     print(f"modeTX: {check(REG_OP_MODE)}")
 
