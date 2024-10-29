@@ -216,13 +216,16 @@ def send(message):
     note:
     fifo full warning
     """
+    write_register(REG_DETECTION_OPTIMIZE, PACKET_CONFIG_2)
     write_register(REG_PAYLOAD_LENGTH, 0x00)
-    write_on_fifo([ord(c) for c in message])  # Conversione del messaggio in lista di byte
+    for byte in message.encode():
+        write_register(REG_FIFO, byte)
+    print("Message written to FIFO")
     payload_length = len(message)
     write_register(REG_PAYLOAD_LENGTH, payload_length)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
-    while not dio0_pin.is_active:
-        pass  # Attesa che DIO0 vada a HIGH, indicando fine trasmissione
+    if not dio0_pin.is_active:
+        pass
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
 
 try:
