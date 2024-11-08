@@ -155,6 +155,7 @@ def set_module_on_receive():
     if read_register(REG_DIO_MAPPING_1) != DIO_MAPPING_RX:
         write_register(REG_DIO_MAPPING_1, DIO_MAPPING_RX)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
+    write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_RX_BASE_ADDR))
     print("Module set to continuous receive mode")
 
 def on_receive():
@@ -162,6 +163,8 @@ def on_receive():
     message = [read_register(REG_FIFO) for _ in range(nb_bytes)]
     reconstructed_message = ''.join(chr(byte) for byte in message)
     print(f"Message received: {reconstructed_message}")
+    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
+    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
     write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_RX_BASE_ADDR))
     write_register(REG_IRQ_FLAGS, 0xFF)
 
