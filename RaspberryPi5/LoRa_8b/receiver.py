@@ -17,7 +17,7 @@ SPREADING_FACTOR            = 0x70 # 7
 CODING_RATE                 = 0x02 # 4/5
 
 try:
-    lora.set_pins(CS_PIN, RST_PIN, DIO0_PIN)
+    lora.set_pins()
     lora.set_spi(SPI_FREQUENCY)
 
     lora.begin()
