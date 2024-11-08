@@ -112,6 +112,7 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
 
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_SLEEP)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
+    if(debugger):print(f"BEGIN_OP_MODE: {read_register(REG_OP_MODE)}")
     write_register(REG_PA_CONFIG, PA_OPTIMAL_POWER)
 
     frf = int((frequency * (2**19)) / xosc_freq)
@@ -135,7 +136,7 @@ def send(message):
         write_register(REG_FIFO, byte)
     write_register(REG_PAYLOAD_LENGTH, len(message))
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
-    if(debugger):print(f"OP_MODE: {read_register(REG_OP_MODE)}")
+    if(debugger):print(f"SEND_OP_MODE: {read_register(REG_OP_MODE)}")
     print(f"{message} sent.")
     sleep(0.1)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
