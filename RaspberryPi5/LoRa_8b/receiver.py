@@ -21,7 +21,7 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=CODING_RATE)
 
     while True:
-        lora.receive(timeout=5)
+        lora.receive(timeout=30)
 
 except KeyboardInterrupt:
     lora.close()
