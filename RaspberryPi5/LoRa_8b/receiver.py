@@ -21,14 +21,8 @@ try:
 
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=CODING_RATE)
 
-    #receive(timeout=5)
-    packet=0
     while True:
-        lora.send(f"{packet}: Hello, world!")
-        print(f"{packet}: Hello, world!")
-        packet+=1
-        sleep(3)
+        lora.receive(timeout=5)
 
 except KeyboardInterrupt:
-    #spi.close()
-    pass
+    lora.close()
