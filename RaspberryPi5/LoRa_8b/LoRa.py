@@ -62,14 +62,18 @@ IRQ_PAYLOAD_CRC_ERROR_MASK  = 0x20
 IRQ_RX_DONE_MASK            = 0x40
 
 # Var
+debugger = None
 spi = None
 cs_pin = None
 reset_pin = None
 dio0_pin = None
 
 #include the function lora.set_pins used by the std arduino library for LoRa
-def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000):
-    global spi, cs_pin, reset_pin, dio0_pin
+def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000, debug=False):
+    global debugger, spi, cs_pin, reset_pin, dio0_pin
+
+    #set debug mode
+    debugger = debug
     
     # Imposta i pin
     cs_pin = OutputDevice(cs_pin_number)
@@ -131,6 +135,8 @@ def send(message):
         write_register(REG_FIFO, byte)
     write_register(REG_PAYLOAD_LENGTH, len(message))
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
+    if(debugger):print(f"OP_MODE: {read_register(REG_OP_MODE)}")
+    print(f"{message} sent.")
     sleep(0.1)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
 
