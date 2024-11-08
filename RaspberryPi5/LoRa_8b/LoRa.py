@@ -84,9 +84,6 @@ def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=800
     spi = spidev.SpiDev()
     spi.open(0, 0)
     spi.max_speed_hz = frequency
-    
-    # Configura il modulo LoRa
-    begin()
 
 def write_register(address, data):
     cs_pin.off()
