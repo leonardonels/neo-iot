@@ -17,10 +17,9 @@ SPREADING_FACTOR            = 0x70 # 7
 CODING_RATE                 = 0x02 # 4/5
 
 try:
-    lora.set_pins(CS_PIN, RST_PIN, DIO0_PIN)
-    lora.set_spi(SPI_FREQUENCY)
+    lora.setup(CS_PIN, RST_PIN, DIO0_PIN, SPI_FREQUENCY)
 
-    lora.begin()
+    lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=CODING_RATE)
 
     #receive(timeout=5)
     packet=0
