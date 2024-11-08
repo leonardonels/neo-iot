@@ -162,6 +162,7 @@ def on_receive():
     message = [read_register(REG_FIFO) for _ in range(nb_bytes)]
     reconstructed_message = ''.join(chr(byte) for byte in message)
     print(f"Message received: {reconstructed_message}")
+    write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_RX_BASE_ADDR))
     write_register(REG_IRQ_FLAGS, 0xFF)
 
 def close():
