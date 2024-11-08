@@ -135,8 +135,8 @@ def send(message):
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_TX)
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG_OP_MODE)}")
     print(f"{message} sent.")
-    sleep(0.1)
-    write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
+    #sleep(0.1)
+    #write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
 
 def receive(timeout):
     set_module_on_receive()
