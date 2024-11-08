@@ -1,5 +1,4 @@
 import LoRa as lora
-from time import sleep
 
 # Pin configuration
 RST_PIN                     = 22
