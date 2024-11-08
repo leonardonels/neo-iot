@@ -179,3 +179,4 @@ class LoRa:
 
     def close(self):
         self.spi.close()
+
