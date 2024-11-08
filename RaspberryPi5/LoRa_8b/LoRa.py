@@ -76,6 +76,15 @@ class LoRa:
         # Configura il modulo LoRa
         self.begin()
 
+    def set_pins(self, cs_pin, rst_pin, dio0_pin):
+        self.CS_PIN=cs_pin
+        self.RST_PIN=rst_pin
+        self.DIO0_PIN=dio0_pin
+        NSS = OutputDevice(self.CS_PIN)
+        RST = OutputDevice(self.RST_PIN)
+        DIO0 = InputDevice(self.DIO0_PIN)
+        return NSS, RST, DIO0
+
     def set_pins(self):
         NSS = OutputDevice(self.CS_PIN)
         RST = OutputDevice(self.RST_PIN)
