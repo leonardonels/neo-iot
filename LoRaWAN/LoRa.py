@@ -143,7 +143,21 @@ def receive(timeout):
     start_time = time()
     while True:
         if dio0_pin.is_active:
-            on_receive()
+            return on_receive()
+            #start_time = time()    #this comment allow to read only one message
+        elif time() - start_time > timeout:
+            print("Timeout: No messages received within the specified time.")
+            write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
+            break
+        sleep(0.1)
+
+def continuous_receive(timeout):
+    set_module_on_receive()
+    start_time = time()
+    while True:
+        if dio0_pin.is_active:
+            message = on_receive()
+            print(f"Message received: {message}")
             start_time = time()
         elif time() - start_time > timeout:
             print("Timeout: No messages received within the specified time.")
@@ -162,11 +176,12 @@ def on_receive():
     nb_bytes = read_register(REG_RX_NB_BYTES)
     message = [read_register(REG_FIFO) for _ in range(nb_bytes)]
     reconstructed_message = ''.join(chr(byte) for byte in message)
-    print(f"Message received: {reconstructed_message}")
+    #print(f"Message received: {reconstructed_message}")
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_STDBY)
     write_register(REG_OP_MODE, MODE_LONG_RANGE_MODE | MODE_RX_CONTINUOUS)
     write_register(REG_FIFO_ADDR_PTR, read_register(REG_FIFO_RX_BASE_ADDR))
     write_register(REG_IRQ_FLAGS, 0xFF)
+    return reconstructed_message
 
 def close():
     if spi is not None:

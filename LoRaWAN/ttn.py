@@ -1,39 +1,84 @@
-# main.py
 import LoRa as lora
-import time
-import paho.mqtt.client as mqtt
+import socket
+import json
+from time import sleep, time
 
-# Configura il modulo LoRa
-lora.setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=433E6, debug=True)
+# Configura i parametri per la connessione al server TTN
+TTN_GATEWAY_ADDRESS = "router.eu.thethings.network"  # Sostituisci con il server TTN appropriato
+TTN_GATEWAY_PORT = 1700
+GATEWAY_EUI = "B827EBFFFEF7XXXX"  # Inserisci l'ID del tuo gateway
+UDP_PORT = 1700
 
-# Inizializza LoRa
-lora.begin()
+# Configurazione LoRa per ricezione continua
+FREQUENCY = 433  # Frequenza per l'Europa per TTN
+BANDWIDTH = 0x90  # 125 kHz
+SPREADING_FACTOR = 0x74  # Spreading Factor 7 (0x74)
+CODING_RATE = 0x04  # Coding rate 4/5 (0x04)
+TIMEOUT = 10  # Timeout di ricezione in secondi
 
-# Configura MQTT per TTN
-TTN_BROKER = "eu1.cloud.thethings.network"
-TTN_PORT = 1883
-TTN_APP_ID = "your-app-id"  # Sostituisci con il tuo Application ID
-TTN_ACCESS_KEY = "your-access-key"  # Sostituisci con la tua access key
-TTN_TOPIC = "v3/{}/devices/{}/up".format(TTN_APP_ID, "your-device-id")  # Sostituisci con l'ID del dispositivo
+# Imposta l'interfaccia UDP per inviare dati al server TTN
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(("", UDP_PORT))
 
-mqtt_client = mqtt.Client()
-mqtt_client.username_pw_set(TTN_APP_ID, password=TTN_ACCESS_KEY)
-mqtt_client.connect(TTN_BROKER, TTN_PORT, 60)
+def send_to_ttn(data):
+    """
+    Invia i dati ricevuti a TTN tramite UDP.
+    """
+    try:
+        sock.sendto(data, (TTN_GATEWAY_ADDRESS, TTN_GATEWAY_PORT))
+        print(f"Dati inviati a TTN: {data}")
+    except Exception as e:
+        print(f"Errore nell'invio a TTN: {e}")
 
-def on_connect(client, userdata, flags, rc):
-    print(f"Connected to TTN with result code {rc}")
+def create_ttn_packet(payload):
+    """
+    Crea un pacchetto JSON per inviare i dati a TTN.
+    """
+    packet = {
+        "rxpk": [
+            {
+                "time": "immediate",
+                "tmst": int(time() * 1000000),  # Timestamp in microsecondi
+                "freq": FREQUENCY,
+                "chan": 0,
+                "rfch": 0,
+                "stat": 1,
+                "modu": "LORA",
+                "datr": "SF7BW125",
+                "codr": "4/5",
+                "lsnr": 10,
+                "rssi": -40,  # Valore di esempio per RSSI
+                "size": len(payload),
+                "data": payload.encode('utf-8').hex()  # Converti il payload in formato hex
+            }
+        ]
+    }
+    return json.dumps(packet).encode('utf-8')
 
-def on_publish(client, userdata, mid):
-    print(f"Message Published")
+def main():
+    # Configura il modulo LoRa
+    lora.setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000, debug=True)
+    lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=CODING_RATE)
 
-mqtt_client.on_connect = on_connect
-mqtt_client.on_publish = on_publish
+    print("Gateway LoRa per TTN in esecuzione...")
 
-def send_to_ttn(payload):
-    mqtt_client.publish(TTN_TOPIC, payload)
+    try:
+        while True:
+            # Ricezione di un messaggio LoRa
+            message = lora.receive(TIMEOUT)
+            if message:
+                print(f"Messaggio LoRa ricevuto: {message}")
+                
+                # Crea pacchetto e invia a TTN
+                ttn_packet = create_ttn_packet(message)
+                send_to_ttn(ttn_packet)
+            sleep(0.1)
 
-def receive_and_send():
-    while True:
-        lora.receive(timeout=10)  # Ricevi messaggi LoRa
-        message = "Sample message"  # Sostituisci con il messaggio ricevuto
- 
+    except KeyboardInterrupt:
+        print("Chiusura del gateway LoRa.")
+    finally:
+        lora.close()
+        sock.close()
+
+if __name__ == "__main__":
+    main()
