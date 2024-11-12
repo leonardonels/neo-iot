@@ -1,12 +1,16 @@
+#deprecated
+
 import LoRa as lora
 import socket
 import json
 from time import sleep, time
 
 # Configura i parametri per la connessione al server TTN
+WIRELESS = True
 TTN_GATEWAY_ADDRESS = "router.eu.thethings.network"  # Sostituisci con il server TTN appropriato
 TTN_GATEWAY_PORT = 1700
 GATEWAY_EUI = "B827EBFFFEF7XXXX"  # Inserisci l'ID del tuo gateway
+GATEWAY_EUI_WIRELESS = "B827EBFFFEF7XXXX"  # Inserisci l'ID del tuo gateway
 UDP_PORT = 1700
 
 # Configurazione LoRa per ricezione continua
