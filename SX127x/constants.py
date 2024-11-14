@@ -134,10 +134,7 @@ class REG:
         IRQ_FLAGS_MASK     = 0x11
         IRQ_FLAGS          = 0x12
         RX_NB_BYTES        = 0x13
-        RX_HEADER_CNT_MSB  = 0x14
-        RX_PACKET_CNT_MSB  = 0x16
-        MODEM_STAT         = 0x18
-        PKT_SNR_VALUE      = 0x19
+        RX_HEADER_CNT_3     = 0x19
         PKT_RSSI_VALUE     = 0x1A
         RSSI_VALUE         = 0x1B
         HOP_CHANNEL        = 0x1C

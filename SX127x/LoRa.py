@@ -81,7 +81,7 @@ class LoRa(object):
     verbose = True
     dio_mapping = [None] * 6          # store the dio mapping here
 
-    def __init__(self, verbose=True, do_calibration=True, calibration_freq=433):
+    def __init__(self, verbose=True, do_calibration=False, calibration_freq=433):
         """ Init the object
         
         Send the device to sleep, read all registers, and do the calibration (if do_calibration=True)
