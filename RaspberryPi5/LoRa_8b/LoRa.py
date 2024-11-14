@@ -50,6 +50,10 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     sleep(0.1)
 
     write_register(REG.LORA.OP_MODE, MODE.SLEEP)
+    while read_register(REG.LORA.OP_MODE)!=MODE.SLEEP:
+        print("Error initiating the LoRa module, wait...")
+        sleep(5)
+        write_register(REG.LORA.OP_MODE, MODE.SLEEP)
     write_register(REG.LORA.OP_MODE, MODE.STDBY)
     if(debugger):print(f"BEGIN_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
     write_register(REG.LORA.PA_CONFIG, 0x8F)
