@@ -21,7 +21,7 @@
 
 
 import spidev
-from gpiozero import DigitalInputDevice
+from gpiozero import InputDevice
 
 
 class BOARD:
@@ -46,7 +46,7 @@ class BOARD:
         """
         # DIOx
         for dio_pin in [BOARD.dio0, BOARD.dio1, BOARD.dio2, BOARD.dio3]:
-            dio_pin = DigitalInputDevice(dio_pin, pull_up=True)
+            dio_pin = InputDevice(dio_pin)
 
     @staticmethod
     def teardown():
@@ -74,7 +74,7 @@ class BOARD:
         :return: None
         """
         if dio_number == BOARD.dio0:
-            BOARD.dio0.when_activated = callback
+            BOARD.dio0.is_active = callback
 
     @staticmethod
     def add_events(cb_dio0, cb_dio1, cb_dio2, cb_dio3, cb_dio4, cb_dio5, switch_cb=None):
