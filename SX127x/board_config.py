@@ -78,8 +78,7 @@ class BOARD:
         :param callback: The function to call when the DIO triggers an IRQ.
         :return: None
         """
-        if dio_number == BOARD.dio0:
-            BOARD.dio0.is_active = callback
+        pass
 
     @staticmethod
     def add_events(cb_dio0, cb_dio1, cb_dio2, cb_dio3, cb_dio4, cb_dio5, switch_cb=None):
