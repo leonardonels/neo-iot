@@ -279,7 +279,7 @@ class LoRa(object):
         :return: New register settings (3 bytes [msb, mid, lsb])
         :rtype: list[int]
         """
-        assert self.mode == MODE.SLEEP or self.mode == MODE.STDBY # or self.mode == MODE.FSK_STDBY
+        assert self.get_mode() == MODE.SLEEP or self.get_mode() == MODE.STDBY  or self.get_mode() == MODE.FSK_STDBY
         i = int(f * 16384.)    # choose floor
         msb = i // 65536
         i -= msb * 65536
