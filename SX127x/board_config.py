@@ -46,7 +46,7 @@ class BOARD:
         """
         # DIOx
         for dio_pin in [BOARD.dio0, BOARD.dio1, BOARD.dio2, BOARD.dio3]:
-            DigitalInputDevice(dio_pin, pull_up=True)
+            dio_pin = DigitalInputDevice(dio_pin, pull_up=True)
 
     @staticmethod
     def teardown():
