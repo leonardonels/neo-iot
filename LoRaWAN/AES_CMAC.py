@@ -1,4 +1,4 @@
-from Cryptography.fernet import Fernet
+from cryptography.fernet import Fernet
 from struct import pack, unpack
 
 class AES_CMAC:
