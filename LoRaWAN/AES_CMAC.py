@@ -1,9 +1,9 @@
-from Crypto.Cipher import AES
+from Cryptography.fernet import Fernet
 from struct import pack, unpack
 
 class AES_CMAC:
     def gen_subkey(self, K):
-        AES_128 = AES.new(K)
+        AES_128 = Fernet(K)
 
         L = AES_128.encrypt('\x00'*16)
 
@@ -42,7 +42,7 @@ class AES_CMAC:
         const_Bsize = 16
         const_Zero  = b'\x00'*16
 
-        AES_128= AES.new(K)
+        AES_128= Fernet(K)
         K1, K2 = self.gen_subkey(K)
         n      = int(len(M)/const_Bsize)
 
