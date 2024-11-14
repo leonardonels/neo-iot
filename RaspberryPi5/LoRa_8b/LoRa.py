@@ -1,7 +1,7 @@
 import spidev
 from gpiozero import OutputDevice, InputDevice
 from time import sleep, time
-from .constants import *
+from constants import *
 
 # Var
 debugger = None
