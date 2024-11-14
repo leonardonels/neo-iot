@@ -1,7 +1,7 @@
 import spidev
 from gpiozero import OutputDevice, InputDevice
 from time import sleep, time
-from constants import *
+import constants as CONST
 
 # Var
 debugger = None
@@ -28,7 +28,7 @@ def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=800
     spi.max_speed_hz = frequency
 
 def set_mode(mode):
-    write_register(REG.LORA.OP_MODE, mode)
+    write_register(CONST.REG.LORA.OP_MODE, mode)
 
 def write_register(address, data):
     cs_pin.off()
