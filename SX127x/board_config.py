@@ -29,15 +29,18 @@ class BOARD:
         This is the Raspberry Pi board with one LED and a modtronix inAir9B
     """
     # Define GPIO pins
-    #cs_pin_number = 25
-    #rst_pin_number = 22
-    #dio0_pin_number = 27
+    cs_pin_number = 25
+    rst_pin_number = 22
+    dio0_pin_number = 27
+    dio1_pin_number = 23
+    dio2_pin_number = 24
+    dio3_pin_number = 18
 
     spi = None
-    dio0 = 27
-    dio1 = 23
-    dio2 = 24
-    dio3 = 18
+    dio0 = None
+    dio1 = None
+    dio2 = None
+    dio3 = None
 
     @staticmethod
     def setup():
@@ -45,8 +48,10 @@ class BOARD:
         :rtype : None
         """
         # DIOx
-        for dio_pin in [BOARD.dio0, BOARD.dio1, BOARD.dio2, BOARD.dio3]:
-            dio_pin = InputDevice(dio_pin)
+        BOARD.dio0=InputDevice(BOARD.dio0_pin_number)
+        BOARD.dio1=InputDevice(BOARD.dio1_pin_number)
+        BOARD.dio2=InputDevice(BOARD.dio2_pin_number)
+        BOARD.dio3=InputDevice(BOARD.dio3_pin_number)
 
     @staticmethod
     def teardown():
