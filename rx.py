@@ -30,7 +30,7 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
-        message = lora.receive(timeout=5)
+        message = loratwo.receive(timeout=5, key=key)
         print(message)
         sleep(1)
 except KeyboardInterrupt:

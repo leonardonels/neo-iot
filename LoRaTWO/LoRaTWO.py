@@ -19,5 +19,17 @@ def send(message, key):
     lora.send_bytes(iv+ciphertext)
     print(f"{message} sent.")
 
-def receive():
-    pass
+def receive(timeout, key):
+    encrypted_data = lora.receive(timeout)
+    iv = encrypted_data[:16]
+    ciphertext = encrypted_data[16:]
+
+    cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
+    decryptor = cipher.decryptor()
+
+    decrypted_data = decryptor.update(ciphertext) + decryptor.finalize()
+
+    unpadder = PKCS7(128).unpadder()
+    unpadded_data = unpadder.update(decrypted_data) + unpadder.finalize()
+
+    return unpadded_data.decode('utf-8')
