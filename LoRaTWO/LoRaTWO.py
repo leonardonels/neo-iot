@@ -18,3 +18,6 @@ def send(message, key):
     ciphertext = encryptor.update(padded_message) + encryptor.finalize()
     lora.send_bytes(iv+ciphertext)
     print(f"{message} sent.")
+
+def receive():
+    pass

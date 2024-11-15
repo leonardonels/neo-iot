@@ -76,6 +76,16 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     write_register(REG.LORA.DETECT_OPTIMIZE, 0xC3)
     write_register(REG.LORA.LNA, 0x23)
 
+def send_bytes(byte_message):
+    write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
+    for byte in byte_message:
+        write_register(REG.LORA.FIFO, byte)
+    write_register(REG.LORA.PAYLOAD_LENGTH, len(byte_message))
+    write_register(REG.LORA.OP_MODE, MODE.TX)
+    if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
+    #sleep(0.1)
+    #write_register(REG.LORA.OP_MODE, MODE.STDBY)
+
 def send(message):
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in message.encode():
@@ -87,27 +97,17 @@ def send(message):
     #sleep(0.1)
     #write_register(REG.LORA.OP_MODE, MODE.STDBY)
 
-def send_bytes(byte_message):
-    write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
-    for byte in byte_message:
-        write_register(REG.LORA.FIFO, byte)
-    write_register(REG.LORA.PAYLOAD_LENGTH, len(byte_message))
-    write_register(REG.LORA.OP_MODE, MODE.TX)
-    if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
-    #sleep(0.1)
-    #write_register(REG.LORA.OP_MODE, MODE.STDBY)
-
 def receive(timeout):
     set_module_on_receive()
     start_time = time()
     while True:
         if dio0_pin.is_active:
-            on_receive()
+            message = on_receive()
             start_time = time()
+            return message
         elif time() - start_time > timeout:
-            print("Timeout: No messages received within the specified time.")
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
-            break
+            return "Timeout: No messages received within the specified time."
         sleep(0.1)
 
 def set_module_on_receive():
@@ -126,6 +126,7 @@ def on_receive():
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
+    return reconstructed_message
 
 def close():
     if spi is not None:
