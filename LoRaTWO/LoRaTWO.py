@@ -16,4 +16,5 @@ def send(message, key):
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
     encryptor = cipher.encryptor()
     ciphertext = encryptor.update(padded_message) + encryptor.finalize()
-    lora.send((iv+ciphertext).decode())
+    lora.send_bytes(iv+ciphertext)
+    print(f"{message} sent.")

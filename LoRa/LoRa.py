@@ -87,6 +87,16 @@ def send(message):
     #sleep(0.1)
     #write_register(REG.LORA.OP_MODE, MODE.STDBY)
 
+def send_bytes(byte_message):
+    write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
+    for byte in byte_message:
+        write_register(REG.LORA.FIFO, byte)
+    write_register(REG.LORA.PAYLOAD_LENGTH, len(byte_message))
+    write_register(REG.LORA.OP_MODE, MODE.TX)
+    if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
+    #sleep(0.1)
+    #write_register(REG.LORA.OP_MODE, MODE.STDBY)
+
 def receive(timeout):
     set_module_on_receive()
     start_time = time()
