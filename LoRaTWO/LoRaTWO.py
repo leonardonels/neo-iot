@@ -11,5 +11,5 @@ def send(message, key):
     iv = urandom(16)
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv))
     encryptor = cipher.encryptor()
-    ciphertext = encryptor.update(message) + encryptor.finalize()
+    ciphertext = encryptor.update(message.encode('utf-8')) + encryptor.finalize()
     lora.send(iv+ciphertext)
