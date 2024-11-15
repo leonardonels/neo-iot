@@ -1,7 +1,9 @@
-from time import sleep
 import sys
 import LoRa.LoRa as lora
+import LoRaTWO.LoRaTWO as loratwo
 from LoRa.constants import MODE
+from time import sleep
+
 
 # Pin configuration
 RST_PIN                     = 22
@@ -29,7 +31,7 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
-        lora.send("Hello World! This is a very long message!")
+        loratwo.send("Hello World! This is a very long message!")
         sleep(5)
 except KeyboardInterrupt:
     sys.stdout.flush()
