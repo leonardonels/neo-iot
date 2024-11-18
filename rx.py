@@ -31,8 +31,6 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
-        if(lora.preamble_detection()):
-            print("Preamble detected!")
         #message = loratwo.receive(timeout=5, key=key)
         message = lora.receive(timeout=5)
         print(message)
