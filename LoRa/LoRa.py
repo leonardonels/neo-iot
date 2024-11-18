@@ -9,25 +9,8 @@ spi = None
 cs_pin = None
 reset_pin = None
 dio0_pin = None
-dio4_pin = None
 
 #include the function lora.set_pins used by the std arduino library for LoRa
-def std_setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000, debug=False):
-    global debugger, spi, cs_pin, reset_pin, dio0_pin
-
-    #set debug mode
-    debugger = debug
-    
-    # Imposta i pin
-    cs_pin = OutputDevice(cs_pin_number)
-    reset_pin = OutputDevice(rst_pin_number)
-    dio0_pin = InputDevice(dio0_pin_number)
-    
-    # Imposta SPI
-    spi = spidev.SpiDev()
-    spi.open(0, 0)
-    spi.max_speed_hz = frequency
-
 def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000, debug=False):
     global debugger, spi, cs_pin, reset_pin, dio0_pin
 

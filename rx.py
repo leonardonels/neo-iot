@@ -7,7 +7,7 @@ from time import sleep
 # Pin configuration
 RST_PIN                     = 22
 DIO0_PIN                    = 27
-DIO4_PIN                    = 24
+DIO1_PIN                    = 24
 CS_PIN                      = 25
 
 #SPI configuration
