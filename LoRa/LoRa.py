@@ -140,7 +140,7 @@ def on_receive():
     nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
     message = [read_register(REG.LORA.FIFO) for _ in range(nb_bytes)]
     reconstructed_message = ''.join(chr(byte) for byte in message)
-    print(f"Message received: {reconstructed_message}")
+    #print(f"Message received: {reconstructed_message}")
     write_register(REG.LORA.OP_MODE, MODE.STDBY)
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
