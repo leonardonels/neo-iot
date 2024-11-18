@@ -31,7 +31,8 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
-        loratwo.send("Hello World! This is a very long message!", key)
+        #loratwo.send("Hello World! This is a very long message!", key)
+        lora.send("Hello World! This is a very long message!")
         sleep(5)
 except KeyboardInterrupt:
     sys.stdout.flush()

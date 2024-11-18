@@ -7,6 +7,7 @@ from time import sleep
 # Pin configuration
 RST_PIN                     = 22
 DIO0_PIN                    = 27
+DIO4_PIN                    = 24
 CS_PIN                      = 25
 
 #SPI configuration
@@ -30,7 +31,10 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
-        message = loratwo.receive(timeout=5, key=key)
+        if(lora.preamble_detection()):
+            print("Preamble detected!")
+        #message = loratwo.receive(timeout=5, key=key)
+        message = lora.receive(timeout=5)
         print(message)
         sleep(1)
 except KeyboardInterrupt:
