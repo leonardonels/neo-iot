@@ -76,23 +76,6 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     write_register(REG.LORA.DETECT_OPTIMIZE, 0xC3)
     write_register(REG.LORA.LNA, 0x23)
 
-def start_cad():
-    write_register(REG.LORA.OP_MODE, MODE.CAD)
-
-def cad_detect():
-    print("Avvio modalità CAD...")
-    start_cad()
-    while not GPIO.input(DIO0_PIN):  # Aspetta l'interrupt da DIO0
-        time.sleep(0.01)  # Polling
-    irq_flags = read_register(0x12)
-    write_register(0x12, 0xFF)  # Pulisci i flag IRQ
-    if irq_flags & 0x01:  # Flag CAD detected
-        print("Preambolo rilevato!")
-        return True
-    else:
-        print("Nessun preambolo rilevato.")
-        return False
-
 def send_bytes(byte_message):
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in byte_message:
@@ -100,8 +83,6 @@ def send_bytes(byte_message):
     write_register(REG.LORA.PAYLOAD_LENGTH, len(byte_message))
     write_register(REG.LORA.OP_MODE, MODE.TX)
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
-    #sleep(0.1)
-    #write_register(REG.LORA.OP_MODE, MODE.STDBY)
 
 def send(message):
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
@@ -111,8 +92,7 @@ def send(message):
     write_register(REG.LORA.OP_MODE, MODE.TX)
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
     print(f"{message} sent.")
-    #sleep(0.1)
-    #write_register(REG.LORA.OP_MODE, MODE.STDBY)
+
 
 def receive(timeout):
     set_module_on_receive()
@@ -133,8 +113,11 @@ def set_module_on_receive():
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     print("Module set to continuous receive mode")
+    # wrote like this is wrong, can be implememnted if needed
+    """
     if(preamble_detection()):
             print("Preamble detected!")
+            """ 
 
 def on_receive():
     nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
@@ -147,11 +130,14 @@ def on_receive():
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
     return reconstructed_message
 
+# not used
+"""
 def preamble_detection():
     preamble=read_register(REG.LORA.DIO_MAPPING_2)
     if int(preamble)!=0:
         return True
     False
+"""
 
 def close():
     if spi is not None:
