@@ -76,6 +76,23 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     write_register(REG.LORA.DETECT_OPTIMIZE, 0xC3)
     write_register(REG.LORA.LNA, 0x23)
 
+def start_cad():
+    write_register(REG.LORA.OP_MODE, MODE.CAD)
+
+def cad_detect():
+    print("Avvio modalità CAD...")
+    start_cad()
+    while not GPIO.input(DIO0_PIN):  # Aspetta l'interrupt da DIO0
+        time.sleep(0.01)  # Polling
+    irq_flags = read_register(0x12)
+    write_register(0x12, 0xFF)  # Pulisci i flag IRQ
+    if irq_flags & 0x01:  # Flag CAD detected
+        print("Preambolo rilevato!")
+        return True
+    else:
+        print("Nessun preambolo rilevato.")
+        return False
+
 def send_bytes(byte_message):
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in byte_message:
