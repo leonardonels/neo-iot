@@ -112,6 +112,7 @@ def activity_derection(ret=True):
                     irqf=read_register(REG.LORA.IRQ_FLAGS)
                     if irqf-5==80:
                         message = on_receive()
+                        write_register(REG.LORA.IRQ_FLAGS, 0x00)
                         return message
 
 def receive(timeout=5):
