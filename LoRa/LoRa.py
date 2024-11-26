@@ -97,11 +97,8 @@ def activity_derection():
     if read_register(REG.LORA.DIO_MAPPING_1) != 0x40:
         write_register(REG.LORA.DIO_MAPPING_1, 0x40)
     write_register(REG.LORA.OP_MODE, MODE.CAD)
-    print(read_register(REG.LORA.OP_MODE))
+    print(read_register(REG.LORA.IRQ_FLAGS))
     print(read_register(REG.LORA.DIO_MAPPING_1))
-    while True:
-        if dio0_pin.is_active:
-            return True
 
 def receive(timeout):
     set_module_on_receive()
