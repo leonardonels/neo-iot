@@ -74,6 +74,7 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     write_register(REG.LORA.MODEM_CONFIG_2, hex_spreading_factor | 0x04*rx_crc)
     write_register(REG.LORA.DIO_MAPPING_1, 0x00) #DIO_MAPPING_RX
     write_register(REG.LORA.DETECT_OPTIMIZE, 0xC3)
+    write_register(REG.LORA.SYNC_WORD, 0xF3)
     write_register(REG.LORA.LNA, 0x23)
 
     print(read_register(REG.LORA.SYNC_WORD))
