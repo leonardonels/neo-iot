@@ -93,14 +93,25 @@ def send(message):
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
     print(f"{message} sent.")
 
-def activity_derection():
+def activity_derection(ret=True):
+    if read_register(REG.LORA.DIO_MAPPING_1) != 0x00:
+        write_register(REG.LORA.DIO_MAPPING_1, 0x00)
     while True:
         write_register(REG.LORA.IRQ_FLAGS, 0x00)
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         irqf=read_register(REG.LORA.IRQ_FLAGS)
-        print(irqf)
         if irqf-4==1:
-            return True
+            if ret:
+                return True
+            else:
+                write_register(REG.LORA.OP_MODE, MODE.RXCONT)
+                write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
+                irqf=read_register(REG.LORA.IRQ_FLAGS)
+                while True:
+                    irqf=read_register(REG.LORA.IRQ_FLAGS)
+                    if irqf-5==64:
+                        message = on_receive()
+                        return message
 
 def receive(timeout=5):
     set_module_on_receive()
