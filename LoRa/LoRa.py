@@ -102,7 +102,7 @@ def activity_derection():
         if irqf-4==1:
             return True
 
-def receive(timeout):
+def receive(timeout=5):
     set_module_on_receive()
     start_time = time()
     while True:
