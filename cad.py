@@ -25,10 +25,7 @@ try:
     lora.setup(CS_PIN, RST_PIN, DIO0_PIN, SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
     while True:
-        if lora.activity_derection():
-            print("Attività rilevata sul canale!")
-        else:
-            print("Canale inattivo.")
+        print(lora.activity_derection(False))
         sleep(1)  # Ritardo prima del prossimo controllo
 
 except KeyboardInterrupt:
