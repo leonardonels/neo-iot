@@ -9,9 +9,10 @@ spi = None
 cs_pin = None
 reset_pin = None
 dio0_pin = None
+dio3_pin = None
 
 #include the function lora.set_pins used by the std arduino library for LoRa
-def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000, debug=False):
+def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, dio3_pin_number=24, frequency=8000000, debug=False):
     global debugger, spi, cs_pin, reset_pin, dio0_pin
 
     #set debug mode
@@ -21,6 +22,7 @@ def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=800
     cs_pin = OutputDevice(cs_pin_number)
     reset_pin = OutputDevice(rst_pin_number)
     dio0_pin = InputDevice(dio0_pin_number)
+    dio3_pin = InputDevice(dio3_pin_number)
     
     # Imposta SPI
     spi = spidev.SpiDev()
@@ -93,6 +95,12 @@ def send(message):
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
     print(f"{message} sent.")
 
+def activity_derection():
+    while True:
+        if dio4_pin.is_active:
+            return True
+        else:
+            return False
 
 def receive(timeout):
     set_module_on_receive()
