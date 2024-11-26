@@ -110,7 +110,7 @@ def activity_derection(ret=True):
                 while True:
                     irqf=read_register(REG.LORA.IRQ_FLAGS)
                     print(irqf)
-                    if irqf-5==64:
+                    if irqf-5==80:
                         message = on_receive()
                         return message
 
