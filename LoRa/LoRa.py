@@ -99,7 +99,7 @@ def activity_derection():
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         irqf=read_register(REG.LORA.IRQ_FLAGS)
         print(irqf)
-        if irqf-100==1:
+        if irqf-4==1:
             return True
 
 def receive(timeout):
