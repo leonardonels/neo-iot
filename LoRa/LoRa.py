@@ -96,7 +96,7 @@ def send(message):
 def activity_derection():
     if read_register(REG.LORA.DIO_MAPPING_1) != 0x40:
         write_register(REG.LORA.DIO_MAPPING_1, 0x40)
-    write_register(REG.LORA.OP_MODE, MODE.CAD)
+    #write_register(REG.LORA.OP_MODE, MODE.CAD)
     print(read_register(REG.LORA.IRQ_FLAGS))
     print(read_register(REG.LORA.DIO_MAPPING_1))
 
