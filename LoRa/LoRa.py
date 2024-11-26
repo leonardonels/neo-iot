@@ -97,7 +97,7 @@ def activity_derection():
     if read_register(REG.LORA.DIO_MAPPING_1) != 0x40:
         write_register(REG.LORA.DIO_MAPPING_1, 0x40)
     write_register(REG.LORA.OP_MODE, MODE.CAD)
-    print(read_register(REG.LORA.MODE))
+    print(read_register(REG.LORA.OP_MODE))
     print(read_register(REG.LORA.DIO_MAPPING_1))
     while True:
         if dio0_pin.is_active:
