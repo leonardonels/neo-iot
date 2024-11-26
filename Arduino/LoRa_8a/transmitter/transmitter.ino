@@ -27,6 +27,7 @@ void setup() {
   LoRa.setSignalBandwidth(500E3);
   LoRa.setSpreadingFactor(7);
   LoRa.setCodingRate4(5);
+  LoRa.setSyncWord(0xF3);           // ranges from 0-0xFF, default 0x34, see API docs
 
   LoRa.dumpRegisters(Serial);
   Serial.println("LoRa transceiver initated!");

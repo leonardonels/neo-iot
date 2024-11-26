@@ -76,6 +76,8 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     write_register(REG.LORA.DETECT_OPTIMIZE, 0xC3)
     write_register(REG.LORA.LNA, 0x23)
 
+    print(read_register(REG.LORA.SYNC_WORD))
+
 def send_bytes(byte_message):
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in byte_message:
