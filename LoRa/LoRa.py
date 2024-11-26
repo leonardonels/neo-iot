@@ -94,12 +94,14 @@ def send(message):
     print(f"{message} sent.")
 
 def activity_derection():
-    if read_register(REG.LORA.DIO_MAPPING_1) != 0x00:
-        write_register(REG.LORA.DIO_MAPPING_1, 0x00)
+    if read_register(REG.LORA.DIO_MAPPING_1) != 0x40:
+        write_register(REG.LORA.DIO_MAPPING_1, 0x40)
     write_register(REG.LORA.OP_MODE, MODE.CAD)
     while True:
         if dio0_pin.is_active:
             return True
+        else:
+            print("looking for a preamble...")
 
 def receive(timeout):
     set_module_on_receive()
