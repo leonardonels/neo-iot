@@ -30,10 +30,13 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
-        #message = loratwo.receive(timeout=5, key=key)
-        message = lora.receive(timeout=5)
-        print(message)
-        sleep(1)
+        if lora.activity_derection():
+            #print("Attività rilevata sul canale!")
+            print(lora.receive())
+        else:
+            print("Canale inattivo.")
+        sleep(1)  # Ritardo prima del prossimo controllo
+
 except KeyboardInterrupt:
     sys.stdout.flush()
     print("\nKeyboardInterrupt")
