@@ -107,6 +107,7 @@ def activity_derection(read=False):
         elif irqf&4==4:
             return 0
         else:
+            print(irqf&5)
             return -1
 
 def receive(timeout=5):
