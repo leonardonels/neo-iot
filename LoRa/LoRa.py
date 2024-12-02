@@ -75,6 +75,7 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     write_register(REG.LORA.DIO_MAPPING_1, 0x00) #DIO_MAPPING_RX
     write_register(REG.LORA.DETECT_OPTIMIZE, 0x83)
     write_register(REG.LORA.LNA, 0x23)
+    sleep(1)
 
 def send_bytes(byte_message):
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
