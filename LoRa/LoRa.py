@@ -101,19 +101,11 @@ def activity_derection(ret=True):
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         irqf=read_register(REG.LORA.IRQ_FLAGS)
         print(irqf)
-        if irqf&5==4:
+        if irqf&5==5:
             if ret:
                 return True
             else:
-                write_register(REG.LORA.OP_MODE, MODE.RXCONT)
-                write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
-                irqf=read_register(REG.LORA.IRQ_FLAGS)
-                while True:
-                    irqf=read_register(REG.LORA.IRQ_FLAGS)
-                    if irqf&5==5:
-                        message = on_receive()
-                        write_register(REG.LORA.IRQ_FLAGS, 0x00)
-                        return message
+                return False
 
 def receive(timeout=5):
     set_module_on_receive()
