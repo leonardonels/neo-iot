@@ -100,6 +100,7 @@ def activity_derection(read=False):
     while True:
         write_register(REG.LORA.IRQ_FLAGS, 0x00)
         write_register(REG.LORA.OP_MODE, MODE.CAD)
+        sleep(0.1)
         irqf=read_register(REG.LORA.IRQ_FLAGS)
         #print(irqf&5)
         if irqf&5==5:
@@ -107,7 +108,6 @@ def activity_derection(read=False):
         elif irqf&4==4:
             return 0
         else:
-            print(irqf&5)
             return -1
 
 def receive(timeout=5):
