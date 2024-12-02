@@ -101,7 +101,7 @@ def activity_derection(read=False):
         write_register(REG.LORA.IRQ_FLAGS, 0x00)
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         irqf=read_register(REG.LORA.IRQ_FLAGS)
-        print(irqf&5)
+        #print(irqf&5)
         if irqf&5==5:
             return receive(3)
         elif irqf&4==4:
