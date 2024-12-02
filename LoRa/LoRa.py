@@ -94,7 +94,7 @@ def send(message):
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
     print(f"{message} sent.")
 
-def activity_derection():
+def activity_derection(read=False):
     if read_register(REG.LORA.DIO_MAPPING_1) != 0x00:
         write_register(REG.LORA.DIO_MAPPING_1, 0x00)
     while True:
@@ -102,12 +102,11 @@ def activity_derection():
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         irqf=read_register(REG.LORA.IRQ_FLAGS)
         if irqf&5==5:
-            return True
+            return receive(3)
         elif irqf&4==4:
-            return False
+            return 0
         else:
-            print("error on activity detection!")
-            return False
+            return -1
 
 def receive(timeout=5):
     set_module_on_receive()
