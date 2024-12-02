@@ -125,7 +125,7 @@ def set_module_on_receive():
         write_register(REG.LORA.DIO_MAPPING_1, 0x00)
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
-    print("Module set to continuous receive mode")
+    #print("Module set to continuous receive mode")
     # wrote like this is wrong, can be implememnted if needed
     """
     if(preamble_detection()):
