@@ -106,7 +106,6 @@ def activity_derection(timeout=0):
         if (time() - start_time > timeout)&(timeout!=0):
             return False
 
-
 def receive(timeout=5):
     set_module_on_receive()
     start_time = time()
@@ -118,7 +117,6 @@ def receive(timeout=5):
         elif time() - start_time > timeout:
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return "Timeout: No messages received within the specified time."
-        #sleep(0.1)
 
 def set_module_on_receive():
     if read_register(REG.LORA.DIO_MAPPING_1) != 0x00:
@@ -126,11 +124,6 @@ def set_module_on_receive():
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     print("Debug: Module set to continuous receive mode")
-    # wrote like this is wrong, can be implememnted if needed
-    """
-    if(preamble_detection()):
-            print("Preamble detected!")
-            """ 
 
 def on_receive():
     nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
@@ -142,15 +135,6 @@ def on_receive():
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
     return reconstructed_message
-
-# not used
-"""
-def preamble_detection():
-    preamble=read_register(REG.LORA.DIO_MAPPING_2)
-    if int(preamble)!=0:
-        return True
-    False
-"""
 
 def close():
     if spi is not None:
