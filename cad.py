@@ -32,7 +32,7 @@ try:
             print("error on activity detection!")
         else:
             print(cad)
-        sleep(0.01)  # Ritardo prima del prossimo controllo
+        sleep(0.1)  # Ritardo prima del prossimo controllo
 
 except KeyboardInterrupt:
     sys.stdout.flush()
