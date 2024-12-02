@@ -125,7 +125,7 @@ def receive(timeout=5):
         elif time() - start_time > timeout:
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return "Timeout: No messages received within the specified time."
-        sleep(0.1)
+        #sleep(0.1)
 
 def set_module_on_receive():
     if read_register(REG.LORA.DIO_MAPPING_1) != 0x00:
