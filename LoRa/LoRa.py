@@ -123,7 +123,7 @@ def single_receive():
             #print(f"Message received: {reconstructed_message}")
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return reconstructed_message
-        elif time() - start_time > 3:
+        elif time() - start_time > 7:
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return "Timeout: No messages received within the specified time."
 
