@@ -105,12 +105,14 @@ def activity_derection(timeout=0):
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
             write_register(REG.LORA.IRQ_FLAGS, 0xFF)
+            print("preamble detected...")
             return True
         if (time() - start_time > timeout)&(timeout!=0):
             return False
         
 def single_receive():
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
+    print("start reading...")
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     while True:
         if dio0_pin.is_active:
