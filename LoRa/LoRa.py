@@ -111,11 +111,13 @@ def activity_derection(timeout=0):
 def single_receive():
     write_register(REG.LORA.OP_MODE, MODE.RXSINGLE)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
-    nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
-    message = [read_register(REG.LORA.FIFO) for _ in range(nb_bytes)]
-    reconstructed_message = ''.join(chr(byte) for byte in message)
-    #print(f"Message received: {reconstructed_message}")
-    return reconstructed_message
+    while True:
+        if dio0_pin.is_active:
+            nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
+            message = [read_register(REG.LORA.FIFO) for _ in range(nb_bytes)]
+            reconstructed_message = ''.join(chr(byte) for byte in message)
+            #print(f"Message received: {reconstructed_message}")
+            return reconstructed_message
 
 def receive(timeout=5):
     set_module_on_receive()
