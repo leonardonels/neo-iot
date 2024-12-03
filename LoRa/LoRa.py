@@ -81,7 +81,7 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     sleep(1)
 
 def send_bytes(byte_message):
-    while activity_derection:
+    while activity_derection(0.01):
         print("preamble detected, waiting...")
         sleep(0.01)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
@@ -92,7 +92,7 @@ def send_bytes(byte_message):
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
 
 def send(message):
-    while activity_derection:
+    while activity_derection(0.01):
         print("preamble detected, waiting...")
         sleep(0.01)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
