@@ -8,6 +8,7 @@ from time import sleep
 # Pin configuration
 RST_PIN                     = 22
 DIO0_PIN                    = 27
+DIO1_PIN                    = 24
 CS_PIN                      = 25
 
 #SPI configuration
@@ -27,7 +28,7 @@ appskey = [0x15, 0xF6, 0xF4, 0xD4, 0x2A, 0x95, 0xB0, 0x97, 0x53, 0x27, 0xB7, 0xC
 
 
 try:
-    lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=DIO0_PIN, frequency=SPI_FREQUENCY, debug=True)
+    lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=DIO0_PIN, dio1_pin_number=DIO1_PIN, frequency=SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     while True:
