@@ -31,7 +31,7 @@ try:
         if lora.activity_derection():
             message = lora.on_receive()
             test_table.insert({'name': 'UNO', 'message': message})
-            print(f'{time()}: {message}')
+            print(message)
         #sleep(0.1)  # Ritardo prima del prossimo controllo
 
 except KeyboardInterrupt:
