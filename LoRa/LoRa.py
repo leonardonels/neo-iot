@@ -114,6 +114,7 @@ def single_receive():
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     print("start reading...")
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
+    start_time = time()
     while True:
         if dio0_pin.is_active:
             nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
@@ -122,6 +123,9 @@ def single_receive():
             #print(f"Message received: {reconstructed_message}")
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return reconstructed_message
+        elif time() - start_time > 3:
+            write_register(REG.LORA.OP_MODE, MODE.STDBY)
+            return "Timeout: No messages received within the specified time."
 
 def receive(timeout=5):
     set_module_on_receive()
