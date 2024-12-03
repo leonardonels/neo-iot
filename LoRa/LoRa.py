@@ -103,16 +103,15 @@ def activity_derection(timeout=0):
             write_register(REG.LORA.IRQ_FLAGS, 0x01)
         #print(read_register(REG.LORA.IRQ_FLAGS))
         write_register(REG.LORA.OP_MODE, MODE.CAD)
+        write_register(REG.LORA.OP_MODE, MODE.RXCONT)
         if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
-            write_register(REG.LORA.IRQ_FLAGS, 0xFF)
             print("preamble detected...")
             return True
         if (time() - start_time > timeout)&(timeout!=0):
+            write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return False
         
 def single_receive():
-    write_register(REG.LORA.OP_MODE, MODE.RXCONT)
-    print("start reading...")
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     start_time = time()
     while True:
