@@ -104,6 +104,7 @@ def activity_derection(timeout=0):
         #print(read_register(REG.LORA.IRQ_FLAGS))
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
+            set_module_on_receive_packet() 
             return True
         if (time() - start_time > timeout)&(timeout!=0):
             return False
@@ -137,6 +138,25 @@ def on_receive():
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
     return reconstructed_message
+
+def receive_single(timeout=5):
+    start_time = time()
+    
+    while True:
+        if dio0_pin.is_active:  
+            message = on_receive()  
+            return message 
+        elif time() - start_time > timeout:  
+            write_register(REG.LORA.OP_MODE, MODE.STDBY)  
+            return "Timeout: No messages received within the specified time."
+
+def set_module_on_receive_packet():
+    if read_register(REG.LORA.DIO_MAPPING_1) != 0x00:
+        write_register(REG.LORA.DIO_MAPPING_1, 0x00)  
+    write_register(REG.LORA.OP_MODE, MODE.RX)  
+    write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
+    print("Debug: Module set to single receive mode.")
+
 
 def close():
     if spi is not None:
