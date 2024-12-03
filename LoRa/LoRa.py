@@ -100,8 +100,8 @@ def activity_derection(timeout=0):
     start_time = time()
     while True:
         write_register(REG.LORA.IRQ_FLAGS, 0x00)
-        write_register(REG.LORA.OP_MODE, MODE.CAD)
         print(read_register(REG.LORA.IRQ_FLAGS))
+        write_register(REG.LORA.OP_MODE, MODE.CAD)
         if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
             return True
         if (time() - start_time > timeout)&(timeout!=0):
