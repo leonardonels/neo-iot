@@ -81,6 +81,8 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
     sleep(1)
 
 def send_bytes(byte_message):
+    if activity_derection:
+        sleep(random.uniform(1, 5)/10)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in byte_message:
         write_register(REG.LORA.FIFO, byte)
