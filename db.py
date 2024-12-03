@@ -2,7 +2,7 @@ import sys
 import LoRa.LoRa as lora
 import LoRaTWO.LoRaTWO as loratwo
 from LoRa.constants import MODE
-from time import sleep
+from time import sleep, time
 from tinydb import TinyDB
 
 # Pin configuration
@@ -31,7 +31,7 @@ try:
         if lora.activity_derection():
             message = lora.on_receive()
             test_table.insert({'name': 'UNO', 'message': message})
-            print(message)
+            print(f'{time()}: {message}')
         #sleep(0.1)  # Ritardo prima del prossimo controllo
 
 except KeyboardInterrupt:
