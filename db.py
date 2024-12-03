@@ -8,7 +8,7 @@ from tinydb import TinyDB
 # Pin configuration
 RST_PIN                     = 22
 DIO0_PIN                    = 27
-DIO1_PIN                    = 24    # not used
+DIO1_PIN                    = 24
 CS_PIN                      = 25
 
 #SPI configuration
@@ -25,7 +25,7 @@ COD_RATE                    = 0x02 # 4/5
 db = TinyDB('db.json')
 test_table = db.table('raw_data_test')
 try:
-    lora.setup(CS_PIN, RST_PIN, DIO0_PIN, SPI_FREQUENCY, debug=True)
+    lora.setup(CS_PIN, RST_PIN, DIO0_PIN, DIO1_PIN, SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
     while True:
         if lora.activity_derection():

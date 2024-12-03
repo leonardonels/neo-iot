@@ -9,7 +9,7 @@ spi = None
 cs_pin = None
 reset_pin = None
 dio0_pin = None
-dio1_pin= None
+dio1_pin = None
 
 #include the function lora.set_pins used by the std arduino library for LoRa
 def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, dio1_pin_number=24, frequency=8000000, debug=False):
