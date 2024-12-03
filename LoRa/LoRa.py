@@ -97,7 +97,7 @@ def send(message):
 def activity_derection(timeout=0):
     start_time = time()
     while True:
-        write_register(REG.LORA.IRQ_FLAGS, 0xFF)
+        write_register(REG.LORA.IRQ_FLAGS, 0x05)
         sleep(0.1)
         print(read_register(REG.LORA.IRQ_FLAGS))
         #write_register(REG.LORA.OP_MODE, MODE.CAD)
