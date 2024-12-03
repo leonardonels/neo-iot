@@ -34,7 +34,7 @@ def write_register(address, data):
     cs_pin.off()
     spi.writebytes([address | 0x80, data])
     cs_pin.on()
-    sleep(0.001)
+    sleep(0.0065)
 
 def read_register(address):
     cs_pin.off()
@@ -101,7 +101,7 @@ def activity_derection(timeout=0):
             write_register(REG.LORA.IRQ_FLAGS, 0x04)
         if read_register(REG.LORA.IRQ_FLAGS)&1==1:
             write_register(REG.LORA.IRQ_FLAGS, 0x01)
-        #print(read_register(REG.LORA.IRQ_FLAGS))
+        print(read_register(REG.LORA.IRQ_FLAGS))
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
             return True
