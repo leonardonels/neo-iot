@@ -28,7 +28,7 @@ try:
     lora.setup(CS_PIN, RST_PIN, DIO0_PIN, frequency=SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
     while True:
-        message = lora.receive()
+        message = lora.receive(0)
         test_table.insert({'name': 'UNO', 'message': message})
         print(message)
         #sleep(0.1)  # Ritardo prima del prossimo controllo
