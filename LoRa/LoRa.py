@@ -110,18 +110,16 @@ def activity_derection(timeout=0):
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return False
         
-def single_receive():
+def single_receive(timeout=5):
+    write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     start_time = time()
     while True:
         if dio0_pin.is_active:
-            nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
-            message = [read_register(REG.LORA.FIFO) for _ in range(nb_bytes)]
-            reconstructed_message = ''.join(chr(byte) for byte in message)
-            #print(f"Message received: {reconstructed_message}")
-            write_register(REG.LORA.OP_MODE, MODE.STDBY)
-            return reconstructed_message
-        elif time() - start_time > 7:
+            message = on_receive()
+            start_time = time()
+            return message
+        elif time() - start_time > timeout:
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return "Timeout: No messages received within the specified time."
 
