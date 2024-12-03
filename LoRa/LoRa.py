@@ -92,6 +92,7 @@ def send_bytes(byte_message):
 
 def send(message):
     if activity_derection:
+        print("preamble detected, waiting...")
         sleep(random.uniform(1, 5)/10)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in message.encode():
