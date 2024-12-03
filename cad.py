@@ -22,7 +22,7 @@ COD_RATE                    = 0x02 # 4/5
 
 # Main
 try:
-    lora.setup(CS_PIN, RST_PIN, DIO0_PIN, SPI_FREQUENCY, debug=True)
+    lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=DIO0_PIN, frequency=SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
     while True:
         if lora.activity_derection():
