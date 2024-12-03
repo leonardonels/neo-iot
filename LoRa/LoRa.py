@@ -109,6 +109,7 @@ def activity_derection(timeout=0):
             return False
         
 def single_receive():
+    write_register(REG.LORA.OP_MODE, MODE.RXSINGLE)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
     message = [read_register(REG.LORA.FIFO) for _ in range(nb_bytes)]
