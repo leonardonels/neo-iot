@@ -59,7 +59,7 @@ def begin(frequency=433, hex_bandwidth=0x90, hex_spreading_factor=0x70, hex_codi
         write_register(REG.LORA.OP_MODE, MODE.SLEEP)
     write_register(REG.LORA.OP_MODE, MODE.STDBY)
     if(debugger):print(f"BEGIN_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
-    write_register(REG.LORA.PA_CONFIG, 0xFF)
+    write_register(REG.LORA.PA_CONFIG, 0x8F)
 
     frf = int((frequency * (2**19)) / xosc_freq)
     msb = (frf >> 16) & 0xFF
@@ -103,7 +103,6 @@ def activity_derection(timeout=0):
             write_register(REG.LORA.IRQ_FLAGS, 0x01)
         #print(read_register(REG.LORA.IRQ_FLAGS))
         write_register(REG.LORA.OP_MODE, MODE.CAD)
-        write_register(REG.LORA.OP_MODE, MODE.RXCONT)
         if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
             print("preamble detected...")
             return True
