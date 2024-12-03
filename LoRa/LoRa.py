@@ -1,4 +1,5 @@
 import spidev
+import random
 from gpiozero import OutputDevice, InputDevice
 from time import sleep, time
 from LoRa.constants import REG, MODE
@@ -88,6 +89,8 @@ def send_bytes(byte_message):
     if(debugger):print(f"SEND_OP_MODE: {read_register(REG.LORA.OP_MODE)}")
 
 def send(message):
+    if activity_derection:
+        sleep(random.uniform(1, 5))
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in message.encode():
         write_register(REG.LORA.FIFO, byte)
