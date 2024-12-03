@@ -90,7 +90,7 @@ def send_bytes(byte_message):
 
 def send(message):
     if activity_derection:
-        sleep(random.uniform(1, 5))
+        sleep(random.uniform(1, 5)/10)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_TX_BASE_ADDR))
     for byte in message.encode():
         write_register(REG.LORA.FIFO, byte)
