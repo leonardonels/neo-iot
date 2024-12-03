@@ -117,6 +117,7 @@ def single_receive():
             message = [read_register(REG.LORA.FIFO) for _ in range(nb_bytes)]
             reconstructed_message = ''.join(chr(byte) for byte in message)
             #print(f"Message received: {reconstructed_message}")
+            write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return reconstructed_message
 
 def receive(timeout=5):
