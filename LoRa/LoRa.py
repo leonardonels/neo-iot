@@ -98,6 +98,7 @@ def activity_derection(timeout=0):
     start_time = time()
     while True:
         write_register(REG.LORA.IRQ_FLAGS, 0xFF)
+        print(read_register(REG.LORA.IRQ_FLAGS))
         write_register(REG.LORA.OP_MODE, MODE.CAD)
         if read_register(REG.LORA.IRQ_FLAGS)&1 == 1:
             return True
