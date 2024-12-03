@@ -9,9 +9,10 @@ spi = None
 cs_pin = None
 reset_pin = None
 dio0_pin = None
+dio1_pin= None
 
 #include the function lora.set_pins used by the std arduino library for LoRa
-def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=8000000, debug=False):
+def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, dio1_pin_number=24, frequency=8000000, debug=False):
     global debugger, spi, cs_pin, reset_pin, dio0_pin
 
     #set debug mode
@@ -21,6 +22,7 @@ def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, frequency=800
     cs_pin = OutputDevice(cs_pin_number)
     reset_pin = OutputDevice(rst_pin_number)
     dio0_pin = InputDevice(dio0_pin_number)
+    dio1_pin = InputDevice(dio1_pin_number)
     
     # Imposta SPI
     spi = spidev.SpiDev()
@@ -97,31 +99,14 @@ def send(message):
 def activity_derection(timeout=0):
     start_time = time()
     while True:
-        if read_register(REG.LORA.IRQ_FLAGS)&4==4:
-            write_register(REG.LORA.IRQ_FLAGS, 0x04)
-        if read_register(REG.LORA.IRQ_FLAGS)&1==1:
-            write_register(REG.LORA.IRQ_FLAGS, 0x01)
-        #print(read_register(REG.LORA.IRQ_FLAGS))
+        write_register(REG.LORA.DIO_MAPPING_1, 0x20)
         write_register(REG.LORA.OP_MODE, MODE.CAD)
-        if read_register(REG.LORA.IRQ_FLAGS)&5 == 5:
+        if dio1_pin.is_active:
             print("preamble detected...")
             return True
         if (time() - start_time > timeout)&(timeout!=0):
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return False
-        
-def single_receive(timeout=5):
-    write_register(REG.LORA.OP_MODE, MODE.RXCONT)
-    write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
-    start_time = time()
-    while True:
-        if dio0_pin.is_active:
-            message = on_receive()
-            start_time = time()
-            return message
-        elif time() - start_time > timeout:
-            write_register(REG.LORA.OP_MODE, MODE.STDBY)
-            return "Timeout: No messages received within the specified time."
 
 def receive(timeout=5):
     set_module_on_receive()
