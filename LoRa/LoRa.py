@@ -116,7 +116,7 @@ def receive(timeout=5):
             message = on_receive()
             start_time = time()
             return message
-        elif time() - start_time > timeout:
+        elif (time() - start_time > timeout) & timeout!=0:
             write_register(REG.LORA.OP_MODE, MODE.STDBY)
             return "Timeout: No messages received within the specified time."
 
