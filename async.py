@@ -39,9 +39,9 @@ try:
 
     start = time()
     while True:
-        if (start-time())%30:
-            ty.printtable(table)
+        print(start-time())
         
+                
 except KeyboardInterrupt:
     sys.stdout.flush()
     print("\nKeyboardInterrupt")
