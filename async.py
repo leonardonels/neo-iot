@@ -1,8 +1,10 @@
 import sys
+import re
 import LoRa.LoRa as lora
 import TinyDB as ty
 from LoRa.constants import MODE
 from time import time
+from datetime import datetime
 
 # Pin configuration
 RST_PIN                     = 22
@@ -24,7 +26,8 @@ def button_pressed():
     print("Interrupt rilevato!")
     message = lora.on_receive()
     print(message)
-    ty.insert(table, {'name': 'UNO', 'message': message})
+    moisture, index = re.findall(r'\d+', message)
+    ty.insert(table, {'index': 'index', 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M")})
 
 try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
