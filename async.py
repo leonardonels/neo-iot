@@ -32,7 +32,7 @@ def meteo_tmp():
         json_data = response.json()
                 
         print(json_data)
-        current_weather = json_data.get('current_weather', {})
+        current_weather = json_data.get('current', {})
         temperature = current_weather.get('temperature_2m', 'Dati non disponibili')
         precipitation = current_weather.get('precipitation', 'Dati non disponibili')
 
