@@ -35,9 +35,9 @@ def meteo_tmp():
 
 
 def button_pressed():
-    print("Debug: Interrupt rilevato!")
+    #print("Debug: Interrupt rilevato!")
     message = lora.on_receive()
-    print(f'Debug: {message}')
+    #print(f'Debug: {message}')
 
     try:
         moisture, index = re.findall(r'\d+', message)
@@ -60,7 +60,8 @@ try:
     start = time()
     while True:
         if not abs(start-time())%30:
-            ty.printtable(table)
+            #ty.printtable(table)
+            pass 
 
 
 except KeyboardInterrupt:

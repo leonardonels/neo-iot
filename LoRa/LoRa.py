@@ -134,7 +134,7 @@ def set_module_on_receive():
         write_register(REG.LORA.DIO_MAPPING_1, 0x00)
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
-    print("Debug: Module set to continuous receive mode")
+    #print("Debug: Module set to continuous receive mode")
 
 def on_receive():
     nb_bytes = read_register(REG.LORA.RX_NB_BYTES)
