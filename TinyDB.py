@@ -3,14 +3,14 @@ from tinydb import TinyDB
 # Var
 db = None
 
-def createdb(dbname='db.json'):
+def createdb(dbname):
     global db
     db = TinyDB(dbname)
 
 def closedb():
     db.close()
 
-def createtable(tablename='raw_data_test'):
+def createtable(tablename):
     return db.table(tablename)
 
 def insert(table, elem):

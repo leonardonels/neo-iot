@@ -30,8 +30,8 @@ try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
-    ty.createdb()
-    table=ty.createtable()
+    ty.createdb('db.json')
+    table=ty.createtable('raw_data_test')
 
     button=lora.async_dio0(DIO0_PIN)
     lora.set_module_on_receive()
@@ -40,8 +40,8 @@ try:
     start = time()
     while True:
         print(start-time())
-        
-                
+
+
 except KeyboardInterrupt:
     sys.stdout.flush()
     print("\nKeyboardInterrupt")
