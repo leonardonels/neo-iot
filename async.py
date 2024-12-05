@@ -33,8 +33,7 @@ try:
     lora.set_module_on_receive()
     button.when_pressed = button_pressed
 
-    while True:
-        pass
+    pause()
         
 except KeyboardInterrupt:
     sys.stdout.flush()
