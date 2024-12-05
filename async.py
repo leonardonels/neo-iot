@@ -23,7 +23,7 @@ COD_RATE                    = 0x02 # 4/5
 
 def button_pressed():
     print("Interrupt rilevato!")
-    print(lora.on_receive)
+    print(lora.on_receive())
 
 try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
