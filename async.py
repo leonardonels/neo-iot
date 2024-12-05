@@ -1,5 +1,6 @@
 import sys
 import re
+import requests
 import LoRa.LoRa as lora
 import TinyDB as ty
 from LoRa.constants import MODE
@@ -39,6 +40,32 @@ try:
     button=lora.async_dio0(DIO0_PIN)
     lora.set_module_on_receive()
     button.when_released = button_pressed
+
+
+    # URL dell'API di Open-Meteo con parametri di query
+    url = "https://api.open-meteo.com/v1/forecast?latitude=44.5493&longitude=10.9335&current=temperature_2m,precipitation&timezone=Europe%2FBerlin&forecast_days=1"
+
+    # Fare la richiesta GET all'API
+    response = requests.get(url)
+
+    # Verifica se la risposta è stata ricevuta con successo (codice HTTP 200)
+    if response.status_code == 200:
+        # Decodifica la risposta JSON
+        json_data = response.json()
+        
+        # Visualizza l'intero JSON ricevuto (opzionale)
+        print(json_data)
+        
+        # Estrazione dei dati specifici dal JSON
+        current_weather = json_data.get('current_weather', {})
+        temperature = current_weather.get('temperature_2m', 'Dati non disponibili')
+        precipitation = current_weather.get('precipitation', 'Dati non disponibili')
+
+        print(f"Temperatura: {temperature}°C")
+        print(f"Precipitazioni: {precipitation}mm")
+    else:
+        print(f"Errore nella richiesta: {response.status_code}")
+
 
     start = time()
     while True:
