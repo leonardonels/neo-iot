@@ -31,7 +31,7 @@ try:
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
     ty.createdb()
-    table=ty.cleartable()
+    table=ty.createtable()
 
     button=lora.async_dio0(DIO0_PIN)
     lora.set_module_on_receive()
