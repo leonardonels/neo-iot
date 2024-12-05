@@ -39,7 +39,8 @@ try:
 
     start = time()
     while True:
-        print(start-time())
+        if not abs(start-time())%30:
+            ty.printtable()
 
 
 except KeyboardInterrupt:
