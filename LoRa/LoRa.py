@@ -22,8 +22,10 @@ def setup(cs_pin_number=25, rst_pin_number=22, dio0_pin_number=27, dio1_pin_numb
     # Imposta i pin
     cs_pin = OutputDevice(cs_pin_number)
     reset_pin = OutputDevice(rst_pin_number)
-    dio0_pin = InputDevice(dio0_pin_number)
-    dio1_pin = InputDevice(dio1_pin_number)
+    if dio0_pin_number != False:
+        dio0_pin = InputDevice(dio0_pin_number)
+    if dio1_pin_number != False:
+        dio1_pin = InputDevice(dio1_pin_number)
     
     # Imposta SPI
     spi = spidev.SpiDev()
