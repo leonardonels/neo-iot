@@ -31,8 +31,8 @@ def meteo_tmp():
     if response.status_code == 200:
         json_data = response.json()
                 
+        print(json_data)
         current_weather = json_data.get('current_weather', {})
-        print(current_weather)
         temperature = current_weather.get('temperature_2m', 'Dati non disponibili')
         precipitation = current_weather.get('precipitation', 'Dati non disponibili')
 
