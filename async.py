@@ -31,7 +31,7 @@ try:
 
     button=lora.async_dio0(DIO0_PIN)
     lora.set_module_on_receive()
-    button.when_held = button_pressed
+    button.when_released = button_pressed
 
     while True:
         pass
