@@ -46,7 +46,9 @@ def button_pressed():
     print("Debug: Interrupt rilevato!")
     message = lora.on_receive()
     print(f'Debug: {message}')
+
     moisture, index = re.findall(r'\d+', message)
+    meteo_tmp()
     ty.insert(table, {'index': index, 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M")})
 
 try:
