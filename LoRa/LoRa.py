@@ -143,7 +143,6 @@ def on_receive():
     #print(f"Message received: {reconstructed_message}")
     write_register(REG.LORA.OP_MODE, MODE.STDBY)
     write_register(REG.LORA.OP_MODE, MODE.RXCONT)
-    print(read_register(REG.LORA.OP_MODE))
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
     return reconstructed_message

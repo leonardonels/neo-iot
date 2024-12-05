@@ -1,13 +1,6 @@
-from tinydb import TinyDB
+import TinyDB as ty
 
-# Apri il database
-db = TinyDB('db.json')
-
-# Ottieni la tabella che vuoi pulire
-table = db.table('raw_data_test')
-
-# Elimina tutti i documenti dalla tabella
-table.purge()
-
-# Chiudi il database
-db.close()
+ty.createdb()
+table = ty.createtable()
+ty.cleartable(table)
+ty.closedb()

@@ -1,9 +1,8 @@
 import sys
 import LoRa.LoRa as lora
-import LoRaTWO.LoRaTWO as loratwo
+import TinyDB as ty
 from LoRa.constants import MODE
-from time import sleep
-from signal import pause
+from time import time
 
 # Pin configuration
 RST_PIN                     = 22
@@ -23,18 +22,25 @@ COD_RATE                    = 0x02 # 4/5
 
 def button_pressed():
     print("Interrupt rilevato!")
-    print(lora.on_receive())
+    message = lora.on_receive()
+    print(message)
+    ty.insert(table, message)
 
 try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
+    ty.createdb()
+    table=ty.cleartable()
+
     button=lora.async_dio0(DIO0_PIN)
     lora.set_module_on_receive()
     button.when_released = button_pressed
 
+    start = time()
     while True:
-        pass
+        if (start-time())%5:
+            ty.printtable(table)
         
 except KeyboardInterrupt:
     sys.stdout.flush()

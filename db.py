@@ -3,7 +3,7 @@ import LoRa.LoRa as lora
 import LoRaTWO.LoRaTWO as loratwo
 from LoRa.constants import MODE
 from time import sleep, time
-from tinydb import TinyDB
+from TinyDB import TinyDB
 
 # Pin configuration
 RST_PIN                     = 22
