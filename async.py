@@ -4,7 +4,6 @@ import LoRaTWO.LoRaTWO as loratwo
 from LoRa.constants import MODE
 from time import sleep
 from signal import pause
-from gpiozero import Button
 
 # Pin configuration
 RST_PIN                     = 22
@@ -30,9 +29,9 @@ try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
     lora.begin(frequency=FREQUENCY, hex_bandwidth=BANDWIDTH, hex_spreading_factor=SPREADING_FACTOR, hex_coding_rate=COD_RATE, rx_crc=True)
 
-    button=Button(DIO0_PIN)
+    button=lora.async_dio0(DIO0_PIN)
     lora.set_module_on_receive()
-    button.when_pressed = button_pressed
+    button.when_held = button_pressed
 
     while True:
         pass
