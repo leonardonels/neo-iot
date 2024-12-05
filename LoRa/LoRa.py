@@ -39,7 +39,7 @@ def write_register(address, data):
     cs_pin.off()
     spi.writebytes([address | 0x80, data])
     cs_pin.on()
-    sleep(0.01)
+    sleep(0.1)
 
 def read_register(address):
     cs_pin.off()
