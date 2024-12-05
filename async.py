@@ -23,11 +23,11 @@ COD_RATE                    = 0x02 # 4/5
 
 
 def button_pressed():
-    print("Interrupt rilevato!")
+    print("Debug: Interrupt rilevato!")
     message = lora.on_receive()
-    print(message)
+    print(f'Debug: {message}')
     moisture, index = re.findall(r'\d+', message)
-    ty.insert(table, {'index': 'index', 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M")})
+    ty.insert(table, {'index': index, 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M")})
 
 try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
