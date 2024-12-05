@@ -145,11 +145,11 @@ def on_receive():
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
     return reconstructed_message
 
-def async_dio0():
-    return Button(dio0_pin)
+def async_dio0(dio_pin):
+    return Button(dio_pin)
 
-def async_dio1():
-    return Button(dio1_pin)
+def async_dio1(dio_pin):
+    return Button(dio_pin)
 
 def close():
     if spi is not None:
