@@ -1,6 +1,6 @@
 import spidev
 import random
-from gpiozero import OutputDevice, InputDevice
+from gpiozero import OutputDevice, InputDevice, Button
 from time import sleep, time
 from LoRa.constants import REG, MODE
 
@@ -144,6 +144,12 @@ def on_receive():
     write_register(REG.LORA.FIFO_ADDR_PTR, read_register(REG.LORA.FIFO_RX_BASE_ADDR))
     write_register(REG.LORA.IRQ_FLAGS, 0xFF)
     return reconstructed_message
+
+def async_dio0():
+    return Button(dio0_pin)
+
+def async_dio1():
+    return Button(dio1_pin)
 
 def close():
     if spi is not None:
