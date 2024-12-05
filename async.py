@@ -30,16 +30,10 @@ def meteo_tmp():
 
     if response.status_code == 200:
         json_data = response.json()
-                
-        print(json_data)
         current_weather = json_data.get('current', {})
-        temperature = current_weather.get('temperature_2m', 'Dati non disponibili')
-        precipitation = current_weather.get('precipitation', 'Dati non disponibili')
-
-        print(f"Temperatura: {temperature}°C")
-        print(f"Precipitazioni: {precipitation}mm")
+        return current_weather.get('temperature_2m', 'Dati non disponibili'),  current_weather.get('precipitation', 'Dati non disponibili')
     else:
-        return False
+        return False, False
 
 
 def button_pressed():
@@ -48,8 +42,11 @@ def button_pressed():
     print(f'Debug: {message}')
 
     moisture, index = re.findall(r'\d+', message)
-    meteo_tmp()
-    ty.insert(table, {'index': index, 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M")})
+    temperature, precipitation = meteo_tmp()
+    if (not temperature) | (not precipitation):
+        ty.insert(table, {'index': index, 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M")})
+    else:
+        ty.insert(table, {'index': index, 'moisture': moisture, 'time':datetime.now().strftime("%Y-%m-%dT%H:%M"), 'temperature_API':temperature, 'precipitation_API':precipitation})
 
 try:
     lora.setup(cs_pin_number=CS_PIN, rst_pin_number=RST_PIN, dio0_pin_number=False, frequency=SPI_FREQUENCY, debug=True)
